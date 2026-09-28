@@ -1117,7 +1117,7 @@ body.is-loading > *:not(.page-skel){ visibility:hidden; }
             <span class="fps-pill">30 FPS</span>
           </div>
           <div class="compare-frame" id="compare-low">
-            <video data- data-src="videos/compare-standard.mp4" src="videos/compare-standard.mp4" poster="images/compare-standard.jpg" muted loop playsinline webkit-playsinline preload="auto"></video>
+            <video data-src="videos/compare-standard.mp4" src="videos/compare-standard.mp4" poster="images/compare-standard.jpg" muted loop playsinline webkit-playsinline preload="auto"></video>
             <div class="vid-loader"><div class="spin"></div></div>
             <div class="vid-controls">
               <button type="button" class="vid-btn play-btn" aria-label="Play/Pause"><i class="fas fa-play"></i></button>
@@ -1139,7 +1139,7 @@ body.is-loading > *:not(.page-skel){ visibility:hidden; }
             <span class="fps-pill">60 FPS</span>
           </div>
           <div class="compare-frame" id="compare-high">
-            <video data- data-src="videos/compare-enhanced.mp4" src="videos/compare-enhanced.mp4" poster="images/compare-enhanced.jpg" muted loop playsinline webkit-playsinline preload="auto"></video>
+            <video data-src="videos/compare-enhanced.mp4" src="videos/compare-enhanced.mp4" poster="images/compare-enhanced.jpg" muted loop playsinline webkit-playsinline preload="auto"></video>
             <div class="vid-loader"><div class="spin"></div></div>
             <div class="vid-controls">
               <button type="button" class="vid-btn play-btn" aria-label="Play/Pause"><i class="fas fa-play"></i></button>
@@ -1675,7 +1675,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 
 /* Silent video cache + tight pair sync + loaders */
 (function(){
-  const DB_NAME = 'aether-vid-cache-v4';
+  const DB_NAME = 'aether-vid-cache-v5';
   const STORE = 'blobs';
   const mem = Object.create(null);
 
@@ -1683,9 +1683,12 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     return new Promise((resolve, reject) => {
       try{
         const req = indexedDB.open(DB_NAME, 1);
-        req.onupgradeneeded = () => { req.result.createObjectStore(STORE); };
+        req.onupgradeneeded = () => {
+          const db = req.result;
+          if(!db.objectStoreNames.contains(STORE)) db.createObjectStore(STORE);
+        };
         req.onsuccess = () => resolve(req.result);
-        req.onerror = () => reject(req.error);
+        req.onerror = () => reject(req.error || new Error('idb'));
       }catch(e){ reject(e); }
     });
   }
@@ -1714,142 +1717,173 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     }catch(e){}
   }
 
-  async function resolveSrc(url){
+  async function getCachedSrc(url){
     if(!url) return url;
     if(mem[url]) return mem[url];
-    const cached = await idbGet(url);
-    if(cached instanceof Blob){
-      const obj = URL.createObjectURL(cached);
+    const blob = await idbGet(url);
+    if(blob instanceof Blob && blob.size > 0){
+      const obj = URL.createObjectURL(blob);
       mem[url] = obj;
       return obj;
     }
-    return url;
+    return null;
   }
 
   async function fetchAndCache(url){
     if(!url) return url;
     if(mem[url]) return mem[url];
+    const hit = await getCachedSrc(url);
+    if(hit) return hit;
     try{
-      const existing = await idbGet(url);
-      if(existing instanceof Blob){
-        mem[url] = URL.createObjectURL(existing);
-        return mem[url];
-      }
       const res = await fetch(url, { credentials:'omit', mode:'cors', cache:'force-cache' });
       if(!res.ok) return url;
       const blob = await res.blob();
-      // store silently — next visit uses blob URL instantly
-      idbSet(url, blob);
-      mem[url] = URL.createObjectURL(blob);
-      return mem[url];
-    }catch(e){ return url; }
+      if(blob && blob.size > 0){
+        idbSet(url, blob); // fire-and-forget
+        mem[url] = URL.createObjectURL(blob);
+        return mem[url];
+      }
+    }catch(e){}
+    return url;
   }
 
-  function setLoader(frame, on){
-    if(!frame) return;
-    const loader = frame.querySelector('.vid-loader');
+  function setLoader(el, on){
+    if(!el) return;
+    const loader = el.classList && el.classList.contains('vid-loader')
+      ? el
+      : el.querySelector && el.querySelector('.vid-loader');
     if(!loader) return;
     if(on) loader.classList.remove('hidden');
     else loader.classList.add('hidden');
   }
 
-  /* ---- TIGHT SYNCED COMPARE PAIR ---- */
-  const pair = { low: null, high: null, lowFrame: null, highFrame: null, lock: false, buffering: false };
+  /* ---- COMPARE PAIR: master clock sync ---- */
+  const pair = {
+    low: null, high: null,
+    lowFrame: null, highFrame: null,
+    lock: false,
+    buffering: false,
+    shouldPlay: true
+  };
 
-  function bothReady(){
+  function bothHaveData(){
     return pair.low && pair.high &&
       pair.low.readyState >= 2 && pair.high.readyState >= 2;
   }
 
-  function alignTo(master){
-    if(!pair.low || !pair.high || pair.lock) return;
-    const slave = master === pair.low ? pair.high : pair.low;
-    if(!slave) return;
+  function showBothLoaders(on){
+    setLoader(pair.lowFrame, on);
+    setLoader(pair.highFrame, on);
+  }
+
+  function hardAlign(master){
+    if(!pair.low || !pair.high) return;
+    const t = master.currentTime;
     pair.lock = true;
     try{
-      const drift = Math.abs(slave.currentTime - master.currentTime);
-      if(drift > 0.08){
-        slave.currentTime = master.currentTime;
-      }
+      if(Math.abs(pair.low.currentTime - t) > 0.05) pair.low.currentTime = t;
+      if(Math.abs(pair.high.currentTime - t) > 0.05) pair.high.currentTime = t;
     }catch(e){}
     pair.lock = false;
   }
 
   function pauseBoth(){
-    if(pair.low && !pair.low.paused) pair.low.pause();
-    if(pair.high && !pair.high.paused) pair.high.pause();
+    try{ if(pair.low) pair.low.pause(); }catch(e){}
+    try{ if(pair.high) pair.high.pause(); }catch(e){}
   }
 
-  function playBothFrom(master){
-    if(!pair.low || !pair.high) return;
-    pair.lock = true;
-    try{
-      const t = master.currentTime;
-      pair.low.currentTime = t;
-      pair.high.currentTime = t;
-      pair.low.muted = true;
-      pair.high.muted = true;
-      const a = pair.low.play();
-      const b = pair.high.play();
-      if(a && a.catch) a.catch(()=>{});
-      if(b && b.catch) b.catch(()=>{});
-    }catch(e){}
-    pair.lock = false;
+  function playBoth(){
+    if(!bothHaveData()) return;
+    const master = pair.low;
+    hardAlign(master);
+    pair.low.muted = true;
+    pair.high.muted = true;
+    const a = pair.low.play();
+    const b = pair.high.play();
+    if(a && a.catch) a.catch(()=>{});
+    if(b && b.catch) b.catch(()=>{});
+    showBothLoaders(false);
   }
 
-  function onBuffering(which){
+  function onBufferStart(){
     pair.buffering = true;
+    pair.shouldPlay = true;
     pauseBoth();
-    setLoader(pair.lowFrame, true);
-    setLoader(pair.highFrame, true);
+    showBothLoaders(true);
   }
 
-  function onReadyAgain(){
-    if(!bothReady()) return;
+  function onBufferEnd(){
+    if(!bothHaveData()) return;
     pair.buffering = false;
-    setLoader(pair.lowFrame, false);
-    setLoader(pair.highFrame, false);
-    // resume together if either should be playing (in view)
-    if(pair.low && pair.high){
-      const master = pair.low.readyState >= pair.high.readyState ? pair.low : pair.high;
-      playBothFrom(master);
+    showBothLoaders(false);
+    if(pair.shouldPlay) playBoth();
+  }
+
+  // rAF sync loop — keeps drift under ~1 frame
+  let rafId = 0;
+  function syncLoop(){
+    rafId = requestAnimationFrame(syncLoop);
+    if(pair.lock || pair.buffering || !pair.low || !pair.high) return;
+    if(pair.low.paused && pair.high.paused) return;
+    // prefer low as master when both playing
+    const master = !pair.low.paused ? pair.low : pair.high;
+    const slave = master === pair.low ? pair.high : pair.low;
+    if(!slave) return;
+    const drift = Math.abs(slave.currentTime - master.currentTime);
+    if(drift > 0.12){
+      pair.lock = true;
+      try{ slave.currentTime = master.currentTime; }catch(e){}
+      pair.lock = false;
+    }
+    // if master playing and slave paused (and has data), resume slave
+    if(!master.paused && slave.paused && slave.readyState >= 2){
+      try{
+        slave.currentTime = master.currentTime;
+        slave.muted = true;
+        slave.play().catch(()=>{});
+      }catch(e){}
     }
   }
+  rafId = requestAnimationFrame(syncLoop);
 
   function wireControls(frame, video){
+    if(!frame || !video) return;
     const playBtn = frame.querySelector('.play-btn');
     const muteBtn = frame.querySelector('.mute-btn');
-    const syncPlayIcon = () => {
-      if(!playBtn) return;
-      const paused = video.paused;
-      playBtn.innerHTML = paused ? '<i class="fas fa-play"></i>' : '<i class="fas fa-pause"></i>';
-      // mirror on the other card
-      const otherFrame = video === pair.low ? pair.highFrame : pair.lowFrame;
-      if(otherFrame){
-        const otherBtn = otherFrame.querySelector('.play-btn');
-        if(otherBtn) otherBtn.innerHTML = paused ? '<i class="fas fa-play"></i>' : '<i class="fas fa-pause"></i>';
-      }
+
+    const paintPlay = () => {
+      const paused = !pair.low || pair.low.paused;
+      [pair.lowFrame, pair.highFrame].forEach(f => {
+        if(!f) return;
+        const btn = f.querySelector('.play-btn');
+        if(btn) btn.innerHTML = paused ? '<i class="fas fa-play"></i>' : '<i class="fas fa-pause"></i>';
+      });
     };
-    const syncMuteIcon = () => {
-      if(muteBtn) muteBtn.innerHTML = video.muted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+    const paintMute = () => {
+      if(muteBtn) muteBtn.innerHTML = video.muted
+        ? '<i class="fas fa-volume-mute"></i>'
+        : '<i class="fas fa-volume-up"></i>';
     };
 
     if(playBtn){
       playBtn.addEventListener('click', (e) => {
         e.preventDefault(); e.stopPropagation();
-        if(video.paused){
-          playBothFrom(video);
+        if(!pair.low) return;
+        if(pair.low.paused){
+          pair.shouldPlay = true;
+          playBoth();
         } else {
+          pair.shouldPlay = false;
           pauseBoth();
         }
-        syncPlayIcon();
+        paintPlay();
       });
     }
     if(muteBtn){
       muteBtn.addEventListener('click', (e) => {
         e.preventDefault(); e.stopPropagation();
         video.muted = !video.muted;
-        syncMuteIcon();
+        paintMute();
       });
     }
     video.addEventListener('click', (e) => {
@@ -1857,171 +1891,128 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       if(playBtn) playBtn.click();
     });
 
-    video.addEventListener('play', () => { syncPlayIcon(); setLoader(frame, false); frame.classList.add('has-media'); });
-    video.addEventListener('playing', () => {
-      setLoader(frame, false);
-      if(video === pair.low || video === pair.high){
-        // ensure sibling is also playing at same time
-        const other = video === pair.low ? pair.high : pair.low;
-        if(other && other.paused && other.readyState >= 2 && !pair.buffering){
-          try{
-            other.currentTime = video.currentTime;
-            other.muted = true;
-            other.play().catch(()=>{});
-          }catch(e){}
-        }
-      }
-    });
-    video.addEventListener('pause', syncPlayIcon);
-    video.addEventListener('volumechange', syncMuteIcon);
-    video.addEventListener('loadeddata', () => { frame.classList.add('has-media'); setLoader(frame, false); });
-    video.addEventListener('canplay', () => {
-      setLoader(frame, false);
-      if(video === pair.low || video === pair.high) onReadyAgain();
-    });
-    video.addEventListener('canplaythrough', () => setLoader(frame, false));
-    video.addEventListener('error', () => setLoader(frame, false));
+    video.addEventListener('play', paintPlay);
+    video.addEventListener('pause', paintPlay);
+    video.addEventListener('volumechange', paintMute);
 
-    // buffering → pause both + show loaders
     video.addEventListener('waiting', () => {
-      if(video === pair.low || video === pair.high) onBuffering(video);
+      if(video === pair.low || video === pair.high) onBufferStart();
       else setLoader(frame, true);
     });
     video.addEventListener('stalled', () => {
-      if(video === pair.low || video === pair.high) onBuffering(video);
+      if(video === pair.low || video === pair.high) onBufferStart();
       else setLoader(frame, true);
     });
-    video.addEventListener('seeking', () => setLoader(frame, true));
-    video.addEventListener('seeked', () => setLoader(frame, false));
-
-    // tight time lock while playing
-    video.addEventListener('timeupdate', () => {
-      if(video !== pair.low && video !== pair.high) return;
-      if(pair.buffering || pair.lock) return;
-      alignTo(video);
+    video.addEventListener('playing', () => {
+      setLoader(frame, false);
+      if(video === pair.low || video === pair.high) onBufferEnd();
     });
-
-    syncPlayIcon(); syncMuteIcon();
+    video.addEventListener('canplay', () => {
+      setLoader(frame, false);
+      if(video === pair.low || video === pair.high) onBufferEnd();
+    });
+    video.addEventListener('canplaythrough', () => setLoader(frame, false));
+    video.addEventListener('loadeddata', () => {
+      frame.classList.add('has-media');
+      setLoader(frame, false);
+    });
+    video.addEventListener('error', () => setLoader(frame, false));
   }
 
-  async function bindCompareFrame(frame, slot){
+  async function bindCompareFrame(frame, role){
     if(!frame) return;
     const video = frame.querySelector('video');
     if(!video) return;
 
-    const url = video.getAttribute('data-src') || video.getAttribute('src');
-    if(!url) return;
+    // always start with loader visible
+    setLoader(frame, true);
 
+    const raw = video.getAttribute('data-src') || video.getAttribute('src');
     video.setAttribute('playsinline', '');
     video.setAttribute('webkit-playsinline', '');
     video.muted = true;
     video.defaultMuted = true;
-    video.playsInline = true;
     video.loop = true;
     video.preload = 'auto';
 
-    if(slot === 'low'){ pair.low = video; pair.lowFrame = frame; }
-    if(slot === 'high'){ pair.high = video; pair.highFrame = frame; }
+    // 1) try cache first (instant on return visits)
+    let src = await getCachedSrc(raw);
+    if(!src){
+      // 2) show loader while network fetch, then cache for next time
+      src = await fetchAndCache(raw);
+    }
+    if(src && video.src !== src){
+      video.src = src;
+      try{ video.load(); }catch(e){}
+    }
+
+    if(role === 'low'){ pair.low = video; pair.lowFrame = frame; }
+    if(role === 'high'){ pair.high = video; pair.highFrame = frame; }
 
     wireControls(frame, video);
-    setLoader(frame, true);
 
-    // Use cached blob if present (instant), else fetch once and store
-    let src = await resolveSrc(url);
-    if(src === url){
-      src = await fetchAndCache(url);
-    }
-    if(video.src !== src){
-      video.src = src;
-      try { video.load(); } catch(e){}
-    }
-
-    const tryPlay = () => {
-      if(pair.buffering) return;
-      video.muted = true;
-      if(pair.low && pair.high && bothReady()){
-        // start both locked
-        const master = pair.low.readyState >= pair.high.readyState ? pair.low : pair.high;
-        playBothFrom(master);
-      } else {
-        const p = video.play();
-        if(p && p.catch) p.catch(() => {
-          if(video.readyState >= 2) setLoader(frame, false);
-        });
+    // when both ready, start together
+    const tryStart = () => {
+      if(bothHaveData()){
+        showBothLoaders(false);
+        if(pair.shouldPlay) playBoth();
       }
     };
+    video.addEventListener('canplay', tryStart);
+    video.addEventListener('loadeddata', tryStart);
 
-    video.addEventListener('canplay', tryPlay, { once:true });
-
+    // Intersection: pause off-screen, resume when back
     const io = new IntersectionObserver((entries) => {
       entries.forEach(en => {
-        if(en.isIntersecting) tryPlay();
-        else {
-          // only pause when BOTH frames leave view
-          if(pair.lowFrame && pair.highFrame){
-            // simple: pause this one; if other also not intersecting, both pause
-            video.pause();
-          } else {
-            video.pause();
+        if(en.isIntersecting){
+          pair.shouldPlay = true;
+          if(bothHaveData() && !pair.buffering) playBoth();
+        } else {
+          // only pause if BOTH out of view roughly — simpler: pause this pair when either leaves
+          if(!en.isIntersecting){
+            // keep shouldPlay true so coming back resumes
+            pauseBoth();
           }
         }
       });
-    }, { threshold: 0.12, rootMargin: '120px 0px' });
+    }, { threshold: 0.25 });
     io.observe(frame);
-
-    requestAnimationFrame(() => {
-      const r = frame.getBoundingClientRect();
-      if(r.top < innerHeight + 140 && r.bottom > -40) tryPlay();
-    });
   }
 
-  /* Continuous drift correction while both playing */
-  function tickSync(){
-    if(pair.low && pair.high && !pair.low.paused && !pair.high.paused && !pair.buffering){
-      const drift = Math.abs(pair.low.currentTime - pair.high.currentTime);
-      if(drift > 0.12){
-        // snap the lagging one to the ahead one
-        const ahead = pair.low.currentTime > pair.high.currentTime ? pair.low : pair.high;
-        alignTo(ahead);
-      }
-    }
-    requestAnimationFrame(tickSync);
-  }
-  requestAnimationFrame(tickSync);
-
-  /* Tutorial caption video */
+  /* ---- Tutorial captions video ---- */
   async function bindTutorial(){
     const player = document.getElementById('tutorial-player');
     const video = document.getElementById('tutorial-video');
     if(!player || !video) return;
-    const url = video.getAttribute('data-src') || video.getAttribute('src');
-    setLoader(player, true);
+    const loader = document.getElementById('tutorial-loader') || player.querySelector('.vid-loader');
+    setLoader(loader || player, true);
+
+    const raw = video.getAttribute('data-src') || video.getAttribute('src');
     video.muted = true;
-    video.playsInline = true;
+    video.defaultMuted = true;
     video.loop = true;
+    video.playsInline = true;
     video.preload = 'auto';
 
-    let src = await resolveSrc(url);
-    if(src === url) src = await fetchAndCache(url);
-    if(video.src !== src){
+    let src = await getCachedSrc(raw);
+    if(!src) src = await fetchAndCache(raw);
+    if(src && video.src !== src){
       video.src = src;
-      try { video.load(); } catch(e){}
+      try{ video.load(); }catch(e){}
     }
 
-    const hide = () => setLoader(player, false);
-    const show = () => setLoader(player, true);
+    const hide = () => setLoader(loader || player, false);
+    const show = () => setLoader(loader || player, true);
     video.addEventListener('waiting', show);
     video.addEventListener('stalled', show);
     video.addEventListener('playing', hide);
     video.addEventListener('canplay', hide);
-    video.addEventListener('canplaythrough', hide);
     video.addEventListener('loadeddata', hide);
     video.addEventListener('error', hide);
 
     const tryPlay = () => {
       video.muted = true;
-      const p = video.play();
-      if(p && p.catch) p.catch(()=>{});
+      video.play().catch(()=>{});
     };
     video.addEventListener('canplay', tryPlay, { once:true });
 
@@ -2030,46 +2021,49 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
         if(en.isIntersecting) tryPlay();
         else video.pause();
       });
-    }, { threshold: 0.2 });
+    }, { threshold: 0.25 });
     io.observe(player);
   }
 
-  /* Also cache drag-compare videos silently */
+  /* ---- Drag-compare videos: cache + pair sync ---- */
   async function bindDragVideos(){
-    document.querySelectorAll('.drag-compare video').forEach(async (video) => {
-      const url = video.getAttribute('src');
-      if(!url) return;
-      video.muted = true;
-      video.playsInline = true;
-      video.loop = true;
-      let src = await resolveSrc(url);
-      if(src === url) src = await fetchAndCache(url);
-      if(video.src !== src){
-        video.src = src;
-        try { video.load(); } catch(e){}
-      }
-      const tryPlay = () => { video.muted = true; video.play().catch(()=>{}); };
-      video.addEventListener('canplay', tryPlay, { once:true });
-      // keep before/after of same drag box in sync
-    });
-    // sync each drag pair
-    document.querySelectorAll('[data-drag]').forEach(box => {
-      const vids = box.querySelectorAll('video');
-      if(vids.length < 2) return;
-      const a = vids[0], b = vids[1];
-      const align = (src) => {
-        const other = src === a ? b : a;
-        if(Math.abs(other.currentTime - src.currentTime) > 0.1){
-          try{ other.currentTime = src.currentTime; }catch(e){}
+    const boxes = document.querySelectorAll('[data-drag]');
+    for(const box of boxes){
+      const vids = Array.from(box.querySelectorAll('video'));
+      for(const video of vids){
+        const raw = video.getAttribute('data-src') || video.getAttribute('src');
+        if(!raw) continue;
+        video.muted = true;
+        video.playsInline = true;
+        video.loop = true;
+        let src = await getCachedSrc(raw);
+        if(!src) src = await fetchAndCache(raw);
+        if(src && video.src !== src){
+          video.src = src;
+          try{ video.load(); }catch(e){}
         }
-        if(!src.paused && other.paused) other.play().catch(()=>{});
-        if(src.paused && !other.paused) other.pause();
-      };
-      a.addEventListener('timeupdate', () => align(a));
-      b.addEventListener('timeupdate', () => align(b));
-    });
+        const tryPlay = () => { video.muted = true; video.play().catch(()=>{}); };
+        video.addEventListener('canplay', tryPlay, { once:true });
+      }
+      if(vids.length >= 2){
+        const a = vids[0], b = vids[1];
+        const align = (src) => {
+          const other = src === a ? b : a;
+          try{
+            if(Math.abs(other.currentTime - src.currentTime) > 0.1){
+              other.currentTime = src.currentTime;
+            }
+            if(!src.paused && other.paused) other.play().catch(()=>{});
+            if(src.paused && !other.paused) other.pause();
+          }catch(e){}
+        };
+        a.addEventListener('timeupdate', () => align(a));
+        b.addEventListener('timeupdate', () => align(b));
+      }
+    }
   }
 
+  // Boot
   bindCompareFrame(document.getElementById('compare-low'), 'low');
   bindCompareFrame(document.getElementById('compare-high'), 'high');
   bindTutorial();
