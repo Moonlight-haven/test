@@ -1,0 +1,1843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AetherEnhance — The Best TikTok Enhancement Tool</title>
+<meta name="description" content="AetherEnhance is a free TikTok video enhancer that helps you preserve TikTok video quality and prevent compression loss. Direct TikTok Studio upload, video patcher, AI upscale, and auto captions."/>
+<meta name="keywords" content="TikTok high quality upload, preserve TikTok video quality, TikTok video enhancer, prevent TikTok compression loss, 1080p TikTok upload, direct TikTok upload, AetherEnhance"/>
+<link rel="canonical" href="https://aetherenhance.com/"/>
+<link rel="icon" type="image/png" href="images/image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="AetherEnhance"/>
+<meta property="og:title" content="AetherEnhance — TikTok Video Enhancer & High Quality Upload"/>
+<meta property="og:description" content="Preserve TikTok video quality. Direct Studio upload, patcher, AI enhance, auto captions — free."/>
+<meta property="og:url" content="https://aetherenhance.com/"/>
+<meta property="og:image" content="https://aetherenhance.com/images/preview-banner.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="AetherEnhance — TikTok Video Enhancer"/>
+<meta name="twitter:description" content="Preserve TikTok video quality and prevent compression loss."/>
+<meta name="twitter:image" content="https://aetherenhance.com/images/preview-banner.png"/>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"AetherEnhance","url":"https://aetherenhance.com/","description":"Free TikTok video enhancement toolkit with direct Studio upload, patching, AI upscale, and auto captions.","applicationCategory":"MultimediaApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07070a;
+  --surface:rgba(18,18,24,.55);
+  --surface2:rgba(28,28,36,.65);
+  --surface3:rgba(40,40,52,.7);
+  --border:rgba(255,255,255,.1);
+  --border2:rgba(255,255,255,.16);
+  --text:#f4f4f5;
+  --muted:#a1a1aa;
+  --dim:#71717a;
+  --white:#ffffff;
+  --black:#07070a;
+  --glow:rgba(255,255,255,.08);
+  --glow-strong:rgba(255,255,255,.14);
+  --font:'Inter',system-ui,sans-serif;
+  --display:'Space Grotesk',system-ui,sans-serif;
+  --mono:'DM Mono',monospace;
+  --max:1080px;
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+
+button, a, input, textarea, select, .vid-btn, .btn, .btn-pill, .faq-q {
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none;
+  outline: none;
+}
+button:focus, a:focus, input:focus, textarea:focus, .vid-btn:focus, .btn:focus, .faq-q:focus {
+  outline: none !important;
+  box-shadow: none;
+}
+button:focus-visible, a:focus-visible {
+  outline: 1px solid rgba(255,255,255,.25);
+  outline-offset: 2px;
+}
+
+html{scroll-behavior:smooth;max-width:100vw;overflow-x:hidden}
+body{
+  -webkit-tap-highlight-color:transparent;
+  background:var(--bg);color:var(--muted);
+  font-family:var(--font);line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background-image:
+    radial-gradient(ellipse 90% 55% at 50% -10%,rgba(255,255,255,.07) 0%,transparent 55%),
+    radial-gradient(ellipse 55% 40% at 85% 12%,rgba(254,44,85,.09) 0%,transparent 55%),
+    radial-gradient(ellipse 45% 35% at 12% 55%,rgba(254,44,85,.05) 0%,transparent 50%),
+    radial-gradient(ellipse 50% 30% at 70% 70%,rgba(37,244,238,.03) 0%,transparent 50%),
+    linear-gradient(180deg,#141218 0%,#07070a 30%,#07070a 100%);
+  background-attachment:fixed;
+}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:2px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+@media(max-width:600px){.wrap{padding:0 18px}}
+
+.top-bar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;pointer-events:none;
+  background:linear-gradient(180deg,rgba(7,7,10,.85) 0%,rgba(7,7,10,0) 100%);
+}
+.top-bar a{pointer-events:auto}
+.btn-pill{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:9px 18px;border-radius:999px;font-family:var(--display);
+  font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+  text-decoration:none;transition:all .2s var(--ease);border:1.5px solid transparent;
+  white-space:nowrap;
+}
+.btn-pill-fill{
+  background:var(--white);color:var(--black);border-color:var(--white);
+}
+.btn-pill-fill:hover{filter:brightness(.92);transform:translateY(-1px)}
+.btn-pill-outline{
+  background:rgba(0,0,0,.35);color:var(--white);border-color:rgba(255,255,255,.45);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+.btn-pill-outline:hover{border-color:var(--white);background:rgba(255,255,255,.08)}
+@media(min-width:600px){
+  .top-bar{padding:18px 28px}
+  .btn-pill{padding:10px 22px;font-size:12px}
+}
+
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--display);font-size:13px;font-weight:600;
+  padding:12px 24px;border-radius:999px;border:1.5px solid transparent;
+  cursor:pointer;text-decoration:none;transition:all .22s var(--ease);
+  letter-spacing:.02em;
+}
+.btn-lg{padding:14px 28px;font-size:14px;font-weight:600;width:100%;max-width:420px}
+@media(max-width:380px){.btn-lg{padding:13px 20px;font-size:13px}}
+.btn-white{
+  background:var(--white);color:var(--black);border-color:var(--white);
+  box-shadow:0 0 24px rgba(255,255,255,.18),0 4px 16px rgba(0,0,0,.25);
+}
+.btn-white:hover{filter:brightness(.95);transform:translateY(-1px);box-shadow:0 0 32px rgba(255,255,255,.28),0 6px 20px rgba(0,0,0,.3)}
+.btn-ghost{
+  background:transparent;color:var(--white);border-color:rgba(255,255,255,.28);
+}
+.btn-ghost:hover{border-color:rgba(255,255,255,.55);background:rgba(255,255,255,.04)}
+.btn-soft{
+  background:var(--surface2);color:var(--text);border-color:var(--border2);
+  font-size:12px;padding:8px 16px;font-weight:500;
+}
+.btn-soft:hover{border-color:rgba(255,255,255,.3)}
+
+.hero{
+  min-height:auto;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:100px 20px 36px;position:relative;
+}
+@media(min-width:600px){
+  .hero{padding:120px 24px 48px}
+}
+
+.hero::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 55% at 50% 35%,rgba(255,255,255,.08) 0%,transparent 60%),
+    radial-gradient(ellipse 45% 35% at 75% 18%,rgba(254,44,85,.1) 0%,transparent 55%),
+    radial-gradient(ellipse 35% 28% at 20% 50%,rgba(254,44,85,.05) 0%,transparent 50%);
+}
+.hero-inner{position:relative;z-index:1;max-width:640px;width:100%}
+
+.wordmark{
+  font-family:var(--display);
+  font-size:clamp(28px,9vw,64px);
+  font-weight:700;
+  letter-spacing:-.04em;
+  color:var(--white);
+  line-height:1.05;
+  margin-bottom:18px;
+  text-transform:uppercase;
+  padding:0 4px;
+}
+.wordmark span{
+  display:inline-block;
+  background:linear-gradient(180deg,#ffffff 0%,#a0a0a0 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+.hero-sub{
+  font-size:clamp(14px,2vw,16px);
+  color:var(--muted);
+  line-height:1.7;
+  font-weight:400;
+  max-width:480px;
+  margin:0 auto 28px;
+}
+.hero-sub strong{color:var(--text);font-weight:500}
+
+.hero-chip{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 16px;border-radius:999px;
+  border:1px solid var(--border2);background:rgba(255,255,255,.03);
+  font-size:12px;color:var(--muted);margin-bottom:28px;
+  font-family:var(--display);font-weight:500;
+}
+.hero-chip b{color:var(--white);font-weight:700}
+
+.hero-actions{
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  width:100%;max-width:420px;margin:0 auto 20px;
+}
+.hero-community{
+  display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
+  margin-top:8px;
+}
+.hero-note{
+  margin-top:20px;font-family:var(--mono);font-size:11px;color:var(--dim);
+  letter-spacing:.02em;
+}
+
+section{padding:88px 0;border-top:1px solid var(--border)}
+.sec-tag{
+  font-family:var(--mono);font-size:10px;color:var(--dim);
+  letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px;display:block;
+}
+.sec-title{
+  font-family:var(--display);font-size:clamp(26px,4vw,40px);
+  font-weight:700;letter-spacing:-.03em;color:var(--white);
+  margin-bottom:12px;line-height:1.15;
+}
+.sec-sub{font-size:15px;color:var(--muted);max-width:480px;line-height:1.7;font-weight:400}
+/* Feature expand/collapse — must win over other .fc rules */
+.feat-grid:not(.is-expanded) > .fc.feat-hidden{
+  display:none !important;
+}
+.feat-grid.is-expanded > .fc.feat-hidden{
+  display:block !important;
+  animation:featIn .45s cubic-bezier(.22,1,.36,1) both;
+}
+.feat-grid.is-expanded > .fc.feat-hidden:nth-child(4){animation-delay:.05s}
+.feat-grid.is-expanded > .fc.feat-hidden:nth-child(5){animation-delay:.1s}
+.feat-grid.is-expanded > .fc.feat-hidden:nth-child(6){animation-delay:.15s}
+.feat-grid.is-expanded > .fc.feat-hidden:nth-child(7){animation-delay:.2s}
+.feat-grid.is-expanded > .fc.feat-hidden:nth-child(8){animation-delay:.25s}
+@keyframes featIn{
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:none}
+}
+.feat-more-wrap{display:flex;justify-content:center;margin-top:28px;margin-bottom:8px}
+.feat-more-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  min-width:min(280px,100%);
+  padding:14px 28px;border-radius:999px;
+  background:#fff;color:#07070a;border:none;
+  font-family:var(--display);font-size:14px;font-weight:600;
+  letter-spacing:-.01em;cursor:pointer;
+  box-shadow:0 8px 28px rgba(0,0,0,.35);
+  transition:transform .2s,box-shadow .2s;
+  -webkit-tap-highlight-color:transparent;
+}
+.feat-more-btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(0,0,0,.45)}
+.feat-more-btn:active{transform:translateY(0)}
+.feat-more-btn i{font-size:12px;opacity:.75}
+
+.feat-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:24px;
+  margin-top:40px;
+}
+@media(min-width:720px){
+  .feat-grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:24px;
+  }
+}
+@media(min-width:980px){
+  .feat-grid{
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+  }
+}
+.fc{
+  background:#111114;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;
+  padding:22px 20px;
+  box-shadow:0 2px 0 rgba(255,255,255,.03) inset,0 12px 40px rgba(0,0,0,.35);
+  transition:border-color .25s,transform .25s,background .25s;
+  margin:0;
+}
+.fc:hover{
+  border-color:rgba(255,255,255,.14);
+  background:#151518;
+  transform:translateY(-2px);
+}
+
+.fc:hover{
+  border-color:rgba(255,255,255,.14);
+  background:#151518;
+  transform:translateY(-2px);
+}
+.fc-icon{
+  width:40px;height:40px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  margin-bottom:14px;
+  color:rgba(255,255,255,.88);
+}
+.fc-svg{width:20px;height:20px;display:block}
+.fc-title{
+  font-family:var(--display);font-size:14px;font-weight:600;color:var(--white);
+  margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.fc-desc{font-size:13px;color:var(--muted);line-height:1.6}
+.live-flag{
+  display:inline-flex;align-items:center;
+  border:1px solid rgba(254,44,85,.35);color:#ff6b8a;
+  background:rgba(254,44,85,.1);font-size:8px;font-weight:600;
+  padding:2px 7px;border-radius:999px;letter-spacing:.06em;
+  font-family:var(--mono);text-transform:uppercase;
+}
+
+.tutorial-layout{
+  display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center;margin-top:48px;
+}
+@media(max-width:900px){.tutorial-layout{grid-template-columns:1fr;gap:32px}}
+.tutorial-player{
+  position:relative;border-radius:24px;overflow:hidden;background:#0a0a0a;
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 0 0 1px rgba(255,255,255,.04),0 12px 40px rgba(0,0,0,.45),0 0 28px rgba(255,255,255,.05);
+  aspect-ratio:16/10;
+}
+.tutorial-player .vid-progress{
+  position:absolute;left:0;right:0;bottom:0;height:3px;z-index:5;
+  background:rgba(255,255,255,.12);
+}
+.tutorial-player .vid-progress > span{
+  display:block;height:100%;width:0%;background:#fff;
+  box-shadow:0 0 10px rgba(255,255,255,.55);
+}
+.tutorial-player .vid-progress.done{opacity:0;transition:opacity .4s .3s}
+.tutorial-player video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#000;
+}
+.tutorial-player-inner{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 50% 40%,#141414 0%,#050505 70%);
+  pointer-events:none;z-index:1;
+}
+.tutorial-player.has-video .tutorial-player-inner{background:transparent}
+.tutorial-caption{text-align:center;padding:20px;font-family:var(--display);font-weight:700;letter-spacing:-.02em;line-height:1.25}
+.tutorial-caption .line1{font-size:clamp(13px,2vw,18px);color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.tutorial-caption .line2{font-size:clamp(22px,3.5vw,34px);color:#fff}
+.tutorial-caption .line2 span{color:#c8c8c8}
+.tutorial-caption .line3{font-size:13px;color:var(--muted);font-style:italic;margin-top:8px;font-weight:400;font-family:var(--font)}
+.tutorial-bar{
+  position:absolute;bottom:0;left:0;right:0;padding:10px 14px;z-index:2;
+  background:linear-gradient(transparent,rgba(0,0,0,.9));
+  display:flex;align-items:center;gap:10px;
+}
+.tutorial-bar .play-icon{
+  width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.12);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;flex-shrink:0;
+}
+.tutorial-bar .scrub{flex:1;height:3px;background:rgba(255,255,255,.12);border-radius:2px;position:relative}
+.tutorial-bar .scrub::after{content:'';position:absolute;left:0;top:0;bottom:0;width:45%;background:var(--white);border-radius:2px}
+.tutorial-bar .time{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.5)}
+.tutorial-footer-label{
+  position:absolute;bottom:0;left:0;right:0;text-align:center;z-index:2;
+  padding:8px;font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--dim);background:rgba(10,10,10,.95);border-top:1px solid var(--border);
+}
+.tutorial-copy h3{
+  font-family:var(--display);font-size:clamp(20px,3vw,26px);font-weight:700;
+  color:var(--white);margin-bottom:12px;letter-spacing:-.02em;
+}
+.tutorial-copy p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px}
+.tutorial-steps{display:flex;flex-direction:column;gap:12px}
+.t-step{display:flex;gap:12px;align-items:flex-start}
+.t-num{
+  width:24px;height:24px;border-radius:50%;border:1px solid var(--border2);
+  color:var(--text);font-family:var(--mono);font-size:11px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.t-text{font-size:13px;color:var(--muted);line-height:1.5}
+.t-text strong{color:var(--white);font-weight:600}
+
+.compare-hero{text-align:center;margin-bottom:40px}
+.compare-hero .sec-tag{display:block;margin-bottom:10px}
+.compare-hero h2{
+  font-family:var(--display);font-size:clamp(26px,4vw,40px);font-weight:700;
+  color:var(--white);letter-spacing:-.03em;margin-bottom:8px;
+}
+.compare-hero p{font-size:14px;color:var(--muted)}
+.side-compare{
+  display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:start;
+  max-width:960px;margin:0 auto;width:100%;
+}
+@media(max-width:720px){
+  .side-compare{grid-template-columns:1fr;gap:20px}
+  .vs-circle{margin:4px auto}
+  .compare-card-wrap{width:100%;max-width:100%}
+}
+.compare-card-wrap{display:flex;flex-direction:column;min-width:0}
+.compare-card{
+  background:#111114;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:20px;overflow:hidden;
+  display:flex;flex-direction:column;
+  box-shadow:0 2px 0 rgba(255,255,255,.03) inset,0 12px 40px rgba(0,0,0,.4);
+  transition:border-color .25s;
+  min-width:0;
+}
+.compare-card.enhanced{
+  border-color:rgba(255,255,255,.14);
+}
+.compare-card:hover{border-color:rgba(255,255,255,.18)}
+.compare-card-head{
+  display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border);
+}
+.compare-card-head .label{
+  font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--muted);font-family:var(--mono);
+}
+.compare-card.enhanced .compare-card-head .label{color:var(--white)}
+.fps-pill{
+  font-size:10px;font-weight:600;padding:3px 8px;border-radius:6px;
+  background:var(--surface3);color:var(--muted);font-family:var(--mono);
+}
+.compare-card.enhanced .fps-pill{color:var(--white);border:1px solid var(--border2)}
+
+
+
+
+.compare-placeholder .big{font-size:26px;margin-bottom:8px;opacity:.4}
+
+.compare-frame{
+  position:relative;
+  width:100%;
+  aspect-ratio:16/9;
+  background:#0a0a0a;
+  overflow:hidden;
+  line-height:0;
+}
+.compare-frame video,.compare-frame img{
+  position:absolute;inset:0;
+  display:block;width:100%;height:100%;
+  object-fit:cover;background:#000;
+}
+.compare-frame .vid-controls{
+  position:absolute;inset:0;pointer-events:none;z-index:3;
+}
+.compare-frame .vid-btn{
+  pointer-events:auto;
+  position:absolute;bottom:14px;
+  width:40px;height:40px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.22);
+  background:rgba(20,20,24,.5);
+  backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);
+  box-shadow:0 4px 20px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.15);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:background .2s,transform .15s,border-color .2s;
+  padding:0;font-size:13px;-webkit-tap-highlight-color:transparent;
+}
+.compare-frame .vid-btn:hover,.compare-frame .vid-btn:active{
+  background:rgba(40,40,48,.65);border-color:rgba(255,255,255,.4);transform:scale(1.05);
+}
+.compare-frame .vid-btn.play-btn{left:14px}
+.compare-frame .vid-btn.mute-btn{right:14px}
+.compare-frame .vid-loader{
+  position:absolute;inset:0;z-index:2;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(8,8,10,.55);
+  transition:opacity .35s ease,visibility .35s;
+}
+.compare-frame .vid-loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.compare-frame .vid-spinner{
+  width:36px;height:36px;border-radius:50%;
+  border:2.5px solid rgba(255,255,255,.15);
+  border-top-color:#fff;
+  animation:vidSpin .7s linear infinite;
+}
+@keyframes vidSpin{to{transform:rotate(360deg)}}
+.compare-placeholder{
+  text-align:center;padding:24px;color:var(--dim);font-size:12px;
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:1;line-height:1.5;pointer-events:none;
+}
+.compare-frame.has-media .compare-placeholder{display:none!important}
+
+.compare-stats{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  margin-top:10px;
+  background:#111114;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 8px 28px rgba(0,0,0,.3);
+}
+.compare-stat{padding:14px 8px;text-align:center;border-right:1px solid rgba(255,255,255,.08)}
+.compare-stat:last-child{border-right:none}
+.compare-stat .v{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--white)}
+.compare-stat .l{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+
+
+.vs-circle{
+  width:40px;height:40px;border-radius:50%;background:var(--surface2);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;font-family:var(--mono);
+  font-size:11px;font-weight:600;color:var(--muted);align-self:center;flex-shrink:0;
+}
+.compare-note{text-align:center;margin-top:18px;font-size:11px;color:var(--dim);font-family:var(--mono)}
+
+.showcase-card-col{display:flex;flex-direction:column;gap:12px;min-width:0}
+.showcase-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:48px}
+@media(max-width:700px){.showcase-grid{grid-template-columns:1fr}}
+.ai-drag-grid{display:none} /* legacy removed */
+@media(max-width:700px){.showcase-grid{grid-template-columns:1fr}}
+.showcase-card{
+  background:#111114;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;padding:26px 22px;display:flex;flex-direction:column;gap:12px;
+  box-shadow:0 2px 0 rgba(255,255,255,.03) inset,0 12px 40px rgba(0,0,0,.35);
+  transition:border-color .25s,transform .25s,background .25s;
+}
+.showcase-card:hover{
+  border-color:rgba(255,255,255,.14);
+  background:#151518;
+  transform:translateY(-2px);
+}
+.showcase-badge{
+  display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid var(--border2);color:var(--muted);width:fit-content;
+}
+.showcase-card h3{font-family:var(--display);font-size:18px;font-weight:700;color:var(--white);letter-spacing:-.02em}
+.showcase-card p{font-size:13px;color:var(--muted);line-height:1.65;flex:1}
+.showcase-meta{display:flex;flex-wrap:wrap;gap:6px}
+.showcase-meta span{
+  font-size:11px;padding:4px 10px;border-radius:6px;background:var(--surface2);
+  border:1px solid var(--border);color:var(--muted);font-weight:500;
+}
+
+.studio-block{display:grid;grid-template-columns:1fr;gap:24px;align-items:start;margin-top:40px;max-width:640px}
+@media(max-width:800px){.studio-block{grid-template-columns:1fr}}
+.studio-points{display:flex;flex-direction:column;gap:16px}
+.sp{display:flex;gap:14px;align-items:flex-start}
+.sp-icon{
+  width:34px;height:34px;border-radius:8px;border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-family:var(--mono);font-size:12px;color:var(--white);font-weight:600;
+}
+.sp h4{font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px;font-family:var(--display)}
+.sp p{font-size:13px;color:var(--muted);line-height:1.55}
+.studio-card{
+  background:#111114;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;padding:28px;text-align:center;
+  box-shadow:0 2px 0 rgba(255,255,255,.03) inset,0 12px 40px rgba(0,0,0,.4);
+}
+.studio-card .tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:12px}
+.studio-card h3{font-family:var(--display);font-size:20px;font-weight:700;color:var(--white);margin-bottom:10px;letter-spacing:-.02em}
+.studio-card p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px}
+
+.compare-wrap{
+  border:1px solid rgba(255,255,255,.1);border-radius:24px;overflow:hidden;margin-top:48px;overflow-x:auto;
+  background:rgba(18,18,26,.4);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+}
+.compare{width:100%;border-collapse:collapse;min-width:500px}
+.compare th{
+  padding:14px 18px;text-align:left;background:var(--surface2);border-bottom:1px solid var(--border);
+  font-size:10px;font-weight:600;color:var(--dim);font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;
+}
+.compare td{padding:12px 18px;border-bottom:1px solid var(--border);font-size:13px;color:var(--muted)}
+.compare tr:last-child td{border-bottom:none}
+.compare tr:hover td{background:var(--surface2)}
+.ck{color:var(--white);font-weight:600}
+.cx{color:var(--dim)}
+
+.join-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:40px}
+@media(max-width:800px){.join-cards{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){.join-cards{grid-template-columns:1fr}}
+.jc{
+  background:rgba(18,18,26,.45);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:24px;padding:22px;display:flex;flex-direction:column;gap:10px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.03),0 8px 32px rgba(0,0,0,.35);
+  transition:border-color .25s,box-shadow .25s,transform .25s,background .25s;
+}
+.jc:hover{
+  border-color:rgba(255,255,255,.2);
+  background:rgba(28,28,38,.55);
+  transform:translateY(-2px);
+  box-shadow:0 12px 40px rgba(0,0,0,.4),0 0 28px rgba(255,255,255,.06);
+}
+.jc-icon{font-size:22px;opacity:.9}
+.jc-name{font-family:var(--display);font-size:15px;font-weight:600;color:var(--white)}
+.jc-desc{font-size:13px;color:var(--muted);line-height:1.55;flex:1}
+.jc-url{font-family:var(--mono);font-size:10px;color:var(--dim)}
+.cta-box{
+  margin-top:48px;text-align:center;padding:36px 24px;border-radius:24px;
+  background:rgba(18,18,26,.5);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 0 30px rgba(255,255,255,.05);
+}
+.cta-box p{font-size:15px;color:var(--muted);margin-bottom:18px;max-width:420px;margin-left:auto;margin-right:auto}
+
+.faq-wrap{
+  border:1px solid rgba(255,255,255,.08);border-radius:20px;overflow:hidden;margin-top:40px;
+  background:#111114;
+  box-shadow:0 12px 40px rgba(0,0,0,.35);
+}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-item:last-child{border-bottom:none}
+.faq-q{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:18px 20px;background:transparent;border:none;color:var(--white);
+  font-size:14px;font-weight:500;text-align:left;cursor:pointer;font-family:var(--font);
+}
+.faq-q svg{flex-shrink:0;transition:transform .25s;color:var(--dim)}
+.faq-item.open .faq-q svg{transform:rotate(180deg)}
+.faq-a{display:none;padding:0 20px 18px;font-size:13.5px;color:var(--muted);line-height:1.7}
+.faq-item.open .faq-a{display:block}
+
+footer{border-top:1px solid var(--border);padding:48px 0 28px}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:28px;margin-bottom:36px}
+@media(max-width:700px){.footer-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:420px){.footer-grid{grid-template-columns:1fr}}
+.fb-name{font-family:var(--display);font-weight:700;font-size:14px;color:var(--white);margin-bottom:8px;letter-spacing:-.02em;text-transform:uppercase}
+.fb-desc{font-size:13px;color:var(--muted);line-height:1.55;max-width:260px}
+.fc-col h4{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:12px;font-family:var(--mono)}
+.fc-col ul{list-style:none}
+.fc-col a{display:block;font-size:13px;color:var(--muted);text-decoration:none;padding:4px 0;transition:color .15s}
+.fc-col a:hover{color:var(--white)}
+.footer-bottom{border-top:1px solid var(--border);padding-top:20px}
+.fcopy{font-size:12px;color:var(--dim)}
+
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .75s cubic-bezier(.22,1,.36,1),transform .75s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:none}
+.reveal-left{opacity:0;transform:translateX(-48px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.reveal-left.visible{opacity:1;transform:none}
+.reveal-right{opacity:0;transform:translateX(48px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.reveal-right.visible{opacity:1;transform:none}
+.reveal-scale{opacity:0;transform:scale(.92);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-scale.visible{opacity:1;transform:none}
+.reveal-fade{opacity:0;transition:opacity .9s ease}
+.reveal-fade.visible{opacity:1}
+.reveal-d1{transition-delay:.1s}
+.reveal-d2{transition-delay:.2s}
+.reveal-d3{transition-delay:.3s}
+.reveal-d4{transition-delay:.4s}
+
+
+
+.quality-early{padding:40px 0 64px;border-top:none}
+.quality-early .compare-hero{margin-bottom:24px}
+.quality-early .sec-tag{opacity:.9}
+.side-compare{max-width:960px;gap:20px}
+
+
+
+
+
+
+
+@media(max-width:800px){}
+
+
+
+
+
+
+
+
+
+/* Skeleton — mirrors real layout (hero + 2 compare cards) */
+.skel{
+  background: linear-gradient(90deg, rgba(255,255,255,.035) 0%, rgba(255,255,255,.09) 50%, rgba(255,255,255,.035) 100%);
+  background-size: 200% 100%;
+  animation: skelShimmer 1.3s ease-in-out infinite;
+  border-radius: 12px;
+  will-change: background-position;
+}
+@keyframes skelShimmer{
+  0%{ background-position: 100% 0; }
+  100%{ background-position: -100% 0; }
+}
+.page-skel{
+  position:fixed; inset:0; z-index:200;
+  background:#07070a;
+  overflow-y:auto; overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  transition: opacity .35s ease, visibility .35s;
+}
+.page-skel.fade-out{ opacity:0; visibility:hidden; pointer-events:none; }
+.page-skel-inner{
+  width:100%; max-width:640px; margin:0 auto;
+  padding: 100px 16px 48px;
+  display:flex; flex-direction:column; align-items:center;
+  box-sizing:border-box;
+}
+.page-skel .skel-logo{ width:min(280px,78%); height:clamp(26px,7vw,34px); margin-bottom:18px; border-radius:8px; }
+.page-skel .skel-sub{ width:92%; height:11px; margin-bottom:8px; border-radius:6px; }
+.page-skel .skel-sub2{ width:70%; height:11px; margin-bottom:20px; border-radius:6px; }
+.page-skel .skel-chip{ width:min(240px,75%); height:28px; border-radius:999px; margin-bottom:20px; }
+.page-skel .skel-btn{ width:100%; max-width:420px; height:48px; border-radius:999px; margin-bottom:10px; }
+.page-skel .skel-btn2{ width:100%; max-width:420px; height:44px; border-radius:999px; margin-bottom:14px; }
+.page-skel .skel-row{ display:flex; gap:10px; margin-bottom:36px; }
+.page-skel .skel-pill{ width:90px; height:30px; border-radius:999px; }
+.page-skel .skel-section-tag{ width:90px; height:10px; border-radius:4px; margin-bottom:12px; align-self:flex-start; }
+.page-skel .skel-section-title{ width:60%; height:22px; border-radius:6px; margin-bottom:20px; align-self:flex-start; }
+.page-skel .skel-compare{
+  width:100%; display:flex; flex-direction:column; gap:16px;
+}
+.page-skel .skel-vcard{
+  width:100%; border-radius:20px; overflow:hidden;
+  border:1px solid rgba(255,255,255,.06);
+  background:rgba(17,17,20,.6);
+}
+.page-skel .skel-vhead{ height:40px; border-radius:0; margin:0; border-bottom:1px solid rgba(255,255,255,.05); }
+.page-skel .skel-vframe{ width:100%; aspect-ratio:16/9; border-radius:0; }
+.page-skel .skel-vstats{ height:48px; border-radius:14px; margin-top:8px; width:100%; }
+.page-skel .skel-vs{
+  width:36px; height:36px; border-radius:50%; margin:0 auto;
+}
+@media(min-width:721px){
+  .page-skel-inner{ max-width:960px; padding-top:120px; }
+  .page-skel .skel-compare{
+    display:grid; grid-template-columns:1fr auto 1fr; gap:16px; align-items:start;
+  }
+  .page-skel .skel-vs{ margin-top:120px; }
+}
+body.is-loading{ overflow:hidden; }
+body.is-loading > *:not(.page-skel){ visibility:hidden; }
+
+
+.contact-form{
+  margin-top:32px; max-width:440px;
+  display:flex; flex-direction:column; gap:12px;
+  background:#111114; border:1px solid rgba(255,255,255,.09);
+  border-radius:20px; padding:22px 18px;
+  box-shadow:0 12px 40px rgba(0,0,0,.35);
+}
+.contact-field{
+  display:flex; align-items:center; gap:12px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:999px; padding:12px 16px;
+  transition:border-color .2s;
+}
+.contact-field:focus-within{ border-color:rgba(255,255,255,.28); }
+.contact-field i{ color:var(--dim); font-size:13px; width:16px; text-align:center; flex-shrink:0; }
+.contact-field input, .contact-field textarea{
+  flex:1; background:transparent; border:none; outline:none;
+  color:var(--white); font-family:var(--font); font-size:14px;
+  min-width:0; width:100%;
+}
+.contact-field input::placeholder, .contact-field textarea::placeholder{ color:var(--dim); }
+.contact-field-area{
+  border-radius:18px; align-items:flex-start; padding-top:14px;
+}
+.contact-field-area textarea{ resize:vertical; min-height:72px; line-height:1.5; }
+.contact-hint{
+  font-size:12px; color:var(--dim); text-align:center; line-height:1.5; margin-top:4px;
+}
+.contact-hint strong{ color:var(--muted); font-weight:500; }
+
+
+.ai-drag-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px}
+@media(max-width:700px){.ai-drag-grid{grid-template-columns:1fr}}
+.drag-compare{
+  position:relative; width:100%; aspect-ratio:1/1;
+  border-radius:20px; overflow:hidden;
+  border:1px solid rgba(255,255,255,.1);
+  background:#0a0a0a;
+  user-select:none; -webkit-user-select:none;
+  touch-action:pan-y;
+  cursor:default;
+}
+.drag-compare img{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; display:block; pointer-events:none;
+}
+.drag-compare .drag-after{
+  clip-path: inset(0 0 0 50%);
+}
+.drag-compare .drag-handle{
+  position:absolute; top:0; bottom:0; left:50%;
+  width:44px; margin-left:-22px;
+  z-index:2;
+  touch-action:none;
+  cursor:ew-resize;
+  background:transparent;
+  display:flex; align-items:stretch; justify-content:center;
+}
+.drag-compare .drag-handle::before{
+  content:'';
+  position:absolute; top:0; bottom:0; left:50%;
+  width:2px; transform:translateX(-50%);
+  background:rgba(255,255,255,.85);
+  pointer-events:none;
+}
+.drag-compare .drag-knob{
+  position:absolute; top:50%; left:50%;
+  width:40px; height:40px; border-radius:50%;
+  transform:translate(-50%,-50%);
+  background:rgba(20,20,24,.55);
+  border:1.5px solid rgba(255,255,255,.5);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  box-shadow:0 4px 16px rgba(0,0,0,.4);
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:12px; gap:2px;
+  pointer-events:none;
+}
+.drag-compare .drag-label{
+  position:absolute; top:12px; z-index:3;
+  font-family:var(--mono); font-size:9px; letter-spacing:.08em;
+  text-transform:uppercase; padding:4px 10px; border-radius:999px;
+  background:rgba(0,0,0,.55); color:#fff; border:1px solid rgba(255,255,255,.12);
+  pointer-events:none;
+}
+.drag-compare .drag-label.before{ left:12px; }
+.drag-compare .drag-label.after{ right:12px; }
+.drag-caption{
+  margin-top:10px; font-size:12px; color:var(--muted); text-align:center;
+}
+
+
+.showcase-card, .review-card, .compare-card, .studio-card, .faq-wrap {
+  content-visibility: auto;
+  contain-intrinsic-size: 200px;
+}
+.reveal, .reveal-left, .reveal-right, .reveal-scale {
+  will-change: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .skel { animation: none !important; }
+}
+
+
+
+.swipe-hint{
+  margin-top:12px;
+  font-size:12px;
+  color:var(--dim);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  letter-spacing:.02em;
+}
+.swipe-hint i{font-size:11px;opacity:.8}
+@media(min-width:800px){
+  .swipe-hint::after{content:' · or use the arrows';}
+}
+
+.reviews-carousel-wrap{
+  margin-top:40px;
+  position:relative;
+  overflow:hidden;
+  padding:20px 0 28px;
+}
+.reviews-track{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  padding:12px 12vw 20px;
+  scroll-behavior:smooth;
+}
+.reviews-track::-webkit-scrollbar{display:none}
+.review-slide{
+  flex:0 0 min(78vw, 340px);
+  scroll-snap-align:center;
+  transition:transform .4s cubic-bezier(.22,1,.36,1), opacity .4s, filter .4s;
+  transform:scale(.88);
+  opacity:.55;
+  filter:blur(.4px);
+}
+.review-slide.is-active{
+  transform:scale(1);
+  opacity:1;
+  filter:none;
+  z-index:2;
+}
+.review-card{
+  background:linear-gradient(160deg, rgba(28,28,34,.95), rgba(14,14,18,.98));
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:24px;
+  padding:22px 20px 20px;
+  box-shadow:0 20px 50px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06);
+  min-height:200px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.review-stars{
+  color:#f5c542;
+  font-size:14px;
+  letter-spacing:2px;
+  line-height:1;
+}
+.review-text{
+  font-size:14px;
+  line-height:1.65;
+  color:var(--text);
+  flex:1;
+  font-weight:400;
+}
+.review-user{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:4px;
+}
+.review-avatar{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,#2a2a32,#1a1a20);
+  border:1px solid rgba(255,255,255,.12);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-weight:700;font-size:14px;color:#fff;
+  flex-shrink:0;
+}
+.review-meta{display:flex;flex-direction:column;gap:2px;min-width:0}
+.review-name{font-size:13px;font-weight:600;color:var(--white);font-family:var(--display)}
+.review-role{font-size:11px;color:var(--dim)}
+.reviews-nav{
+  display:flex;justify-content:center;gap:12px;margin-top:8px;
+}
+.reviews-nav button{
+  width:42px;height:42px;border-radius:50%;
+  background:#111114;border:1px solid rgba(255,255,255,.14);
+  color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s,border-color .2s,transform .2s;
+  -webkit-tap-highlight-color:transparent;
+}
+.reviews-nav button:hover{
+  background:#1a1a20;border-color:rgba(255,255,255,.28);
+}
+.reviews-dots{
+  display:flex;justify-content:center;gap:6px;margin-top:14px;
+}
+.reviews-dots span{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(255,255,255,.2);
+  transition:background .25s, transform .25s;
+}
+.reviews-dots span.is-on{
+  background:#fff;
+  transform:scale(1.25);
+}
+@media(min-width:800px){
+  .review-slide{flex-basis:min(42vw, 380px)}
+  .reviews-track{padding-left:18vw;padding-right:18vw}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body class="is-loading">
+
+<div class="page-skel" id="pageSkel" aria-hidden="true">
+  <div class="page-skel-inner">
+    <div class="skel skel-logo"></div>
+    <div class="skel skel-sub"></div>
+    <div class="skel skel-sub2"></div>
+    <div class="skel skel-chip"></div>
+    <div class="skel skel-btn"></div>
+    <div class="skel skel-btn2"></div>
+    <div class="skel-row">
+      <div class="skel skel-pill"></div>
+      <div class="skel skel-pill"></div>
+    </div>
+    <div class="skel skel-section-tag"></div>
+    <div class="skel skel-section-title"></div>
+    <div class="skel-compare">
+      <div>
+        <div class="skel-vcard">
+          <div class="skel skel-vhead"></div>
+          <div class="skel skel-vframe"></div>
+        </div>
+        <div class="skel skel-vstats"></div>
+      </div>
+      <div class="skel skel-vs"></div>
+      <div>
+        <div class="skel-vcard">
+          <div class="skel skel-vhead"></div>
+          <div class="skel skel-vframe"></div>
+        </div>
+        <div class="skel skel-vstats"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="top-bar">
+  <a class="btn-pill btn-pill-fill" href="https://t.me/aetherenhance_ch" target="_blank" rel="noopener">Sign Up</a>
+  <a class="btn-pill btn-pill-outline" href="https://t.me/AetherEnhanceGroup" target="_blank" rel="noopener">Log In</a>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <h1 class="wordmark"><span>Aether Enhance</span></h1>
+    <p class="hero-sub">
+      Where quality meets the feed. Preserve full resolution and frame rate —
+      <strong>direct to TikTok Studio</strong>. Patch, enhance, caption, and post without the platform crushing your work.
+    </p>
+    <div class="hero-chip">Join <b>200+</b> creators using the quality method</div>
+    <div class="hero-actions">
+      <a class="btn btn-white btn-lg" href="https://t.me/aetherenhance_ch" target="_blank" rel="noopener">Join us now →</a>
+      <a class="btn btn-ghost btn-lg" href="https://youtu.be/2ln78CE53Z4?si=SHXBJNrDOrl_Y0LK" target="_blank" rel="noopener"><i class="fab fa-youtube" style="margin-right:6px"></i> Watch tutorial</a>
+    </div>
+    <div class="hero-community">
+      <a class="btn btn-soft" href="https://t.me/aetherenhance_ch" target="_blank" rel="noopener"><i class="fab fa-telegram-plane"></i> Telegram</a>
+      <a class="btn btn-soft" href="https://discord.gg/9tcC92TcK" target="_blank" rel="noopener"><i class="fab fa-discord"></i> Discord</a>
+    </div>
+    <p class="hero-note">Free · No card · Community access unlocks every module</p>
+  </div>
+</section>
+
+<section id="quality" class="quality-early">
+  <div class="wrap">
+    <div class="compare-hero">
+      <span class="sec-tag">Before &amp; after</span>
+      <h2>See the difference</h2>
+      <p>Same clip — TikTok’s standard re-encode versus an Aether-patched, max-signal source.</p>
+    </div>
+    
+    <div class="side-compare">
+      <div class="compare-card-wrap reveal-left">
+        <div class="compare-card">
+          <div class="compare-card-head">
+            <span class="label">TikTok Standard</span>
+            <span class="fps-pill">30 FPS</span>
+          </div>
+          <div class="compare-frame" id="compare-low">
+            <video src="videos/compare-standard.mp4" poster="images/compare-standard.jpg" muted loop playsinline webkit-playsinline preload="auto"></video>
+            <div class="compare-placeholder">
+              <div class="big">○</div>
+              <div>540p · 30 fps · re-encoded</div>
+              <div style="margin-top:8px;font-size:11px;opacity:.7">Soft edges · low bitrate</div>
+            </div>
+            <div class="vid-loader"><div class="vid-spinner"></div></div>
+            <div class="vid-controls">
+              <button type="button" class="vid-btn play-btn" aria-label="Play/Pause"><i class="fas fa-play"></i></button>
+              <button type="button" class="vid-btn mute-btn" aria-label="Mute/Unmute"><i class="fas fa-volume-mute"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="compare-stats">
+          <div class="compare-stat"><div class="v">540p</div><div class="l">Resolution</div></div>
+          <div class="compare-stat"><div class="v">30fps</div><div class="l">Frame rate</div></div>
+          <div class="compare-stat"><div class="v">Low</div><div class="l">Quality</div></div>
+        </div>
+      </div>
+      <div class="vs-circle">VS</div>
+      <div class="compare-card-wrap reveal-right">
+        <div class="compare-card enhanced">
+          <div class="compare-card-head">
+            <span class="label">Aether Enhanced</span>
+            <span class="fps-pill">60 FPS</span>
+          </div>
+          <div class="compare-frame" id="compare-high">
+            <video src="videos/compare-enhanced.mp4" poster="images/compare-enhanced.jpg" muted loop playsinline webkit-playsinline preload="auto"></video>
+            <div class="compare-placeholder">
+              <div class="big">●</div>
+              <div>1080p · 60 fps · max signal</div>
+              <div style="margin-top:8px;font-size:11px;opacity:.7">Sharp · full bitrate</div>
+            </div>
+            <div class="vid-loader"><div class="vid-spinner"></div></div>
+            <div class="vid-controls">
+              <button type="button" class="vid-btn play-btn" aria-label="Play/Pause"><i class="fas fa-play"></i></button>
+              <button type="button" class="vid-btn mute-btn" aria-label="Mute/Unmute"><i class="fas fa-volume-mute"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="compare-stats">
+          <div class="compare-stat"><div class="v">1080p</div><div class="l">Resolution</div></div>
+          <div class="compare-stat"><div class="v">60fps</div><div class="l">Frame rate</div></div>
+          <div class="compare-stat"><div class="v">Max</div><div class="l">Quality</div></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="compare-note">Binary-level MP4 patch · no re-encode · max signal path</p>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <span class="sec-tag">Toolkit</span>
+    <h2 class="sec-title">Everything you need<br/>to stay sharp on TikTok</h2>
+    <p class="sec-sub">Live modules. Built for creators who refuse soft, compressed uploads.</p>
+    
+    <div class="feat-grid" id="featGrid">
+      <div class="fc reveal">
+        <div class="fc-icon"><svg class="fc-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <div class="fc-title">Video Patcher</div>
+        <div class="fc-desc">Binary-level MP4 patch that stops TikTok’s standard re-encode. Forces max signal so your source stays sharp after upload.</div>
+      </div>
+      <div class="fc reveal-d1">
+        <div class="fc-icon"><svg class="fc-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M10 9l5 3-5 3V9z"/></svg></div>
+        <div class="fc-title">TikTok Studio Upload</div>
+        <div class="fc-desc">Posts through TikTok’s official upload path. Caption, privacy, and brand settings stay in your control.</div>
+      </div>
+      <div class="fc reveal-d2">
+        <div class="fc-icon"><svg class="fc-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3v12H4V7z"/><circle cx="12" cy="13" r="3.5"/></svg></div>
+        <div class="fc-title">Video Enhancer</div>
+        <div class="fc-desc">2× Topaz-grade AI upscale. Sharper faces and restored detail before you patch and post.</div>
+      </div>
+      <div class="fc feat-hidden">
+        <div class="fc-icon"><svg class="fc-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+        <div class="fc-title">4× Image Upscaler</div>
+        <div class="fc-desc">4× image upscale for stills and covers. Cancel anytime — side-by-side when the run finishes.</div>
+      </div>
+      <div class="fc feat-hidden">
+        <div class="fc-icon"><svg class="fc-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 10h8M8 14h5"/></svg></div>
+        <div class="fc-title">Auto Captions</div>
+        <div class="fc-desc">Speech-to-text kinetic captions. Movie Text and Lyrics templates, word edits, in-browser MP4 export.</div>
+      </div>
+      <div class="fc feat-hidden">
+        <div class="fc-icon"><svg class="fc-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7L12 12l8.7-5M12 22V12"/></svg></div>
+        <div class="fc-title">Compressor</div>
+        <div class="fc-desc">Smart H.264 with quality presets and bitrate caps — shrink files without looking soft.</div>
+      </div>
+      <div class="fc feat-hidden">
+        <div class="fc-icon"><svg class="fc-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 19h14"/></svg></div>
+        <div class="fc-title">Video &amp; Music Downloader</div>
+        <div class="fc-desc">Clean video pulls plus music from YouTube and YouTube Music — ready for editing and archival.</div>
+      </div>
+      <div class="fc feat-hidden">
+        <div class="fc-icon"><svg class="fc-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><circle cx="12" cy="16" r="1.2"/></svg></div>
+        <div class="fc-title">Privacy Cleaner</div>
+        <div class="fc-desc">Strip hidden metadata — location, device, timestamps — without touching picture quality.</div>
+      </div>
+    </div>
+    <div class="feat-more-wrap" id="featMoreWrap">
+      <button type="button" class="feat-more-btn" id="featMoreBtn">
+        <span>See all features</span>
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<section id="tutorial">
+  <div class="wrap">
+    <span class="sec-tag">How it looks</span>
+    <h2 class="sec-title">Kinetic captions,<br/>studio-grade results</h2>
+    <p class="sec-sub">Drop a clip, run detection, pick Movie Text or Lyrics — export with word-level timing.</p>
+    <div class="tutorial-layout reveal">
+      <div class="tutorial-player" id="tutorial-player">
+        <video id="tutorial-video" src="videos/captions-demo.mp4" poster="images/captions-demo.jpg" muted loop playsinline preload="metadata"></video>
+        <div class="tutorial-player-inner">
+          <div class="tutorial-caption">
+            <div class="line1">I knew human lives</div>
+            <div class="line2">WERE <span>SHORT</span></div>
+            <div class="line3">But</div>
+          </div>
+        </div>
+        <div class="tutorial-bar">
+          <div class="play-icon">❚❚</div>
+          <div class="scrub"></div>
+          <div class="time">1:00 / 1:11</div>
+        </div>
+        <div class="tutorial-footer-label">Auto Captions · Movie Text · Editor preview</div>
+      </div>
+      <div class="tutorial-copy">
+        <h3>From audio to on-screen text in one pass</h3>
+        <p>Speech recognition builds a word timeline and maps it onto kinetic styles — without leaving the browser.</p>
+        <div class="tutorial-steps">
+          <div class="t-step">
+            <div class="t-num">1</div>
+            <div class="t-text"><strong>Upload your clip</strong> — MP4 or WebM, any aspect ratio.</div>
+          </div>
+          <div class="t-step">
+            <div class="t-num">2</div>
+            <div class="t-text"><strong>Auto-detect captions</strong> — every word timed to the audio.</div>
+          </div>
+          <div class="t-step">
+            <div class="t-num">3</div>
+            <div class="t-text"><strong>Style &amp; export</strong> — templates, colors, position, then MP4.</div>
+          </div>
+        </div>
+        <div style="margin-top:22px">
+          <a class="btn btn-ghost" href="auto-captions.html">Open Auto Captions →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section id="ai">
+  <div class="wrap">
+    <span class="sec-tag">AI enhancement</span>
+    <h2 class="sec-title">Pro video enhance &amp;<br/>4× image upscaler</h2>
+    <p class="sec-sub">Restore detail first — then patch and upload so TikTok keeps what you built.</p>
+    <div class="showcase-grid">
+      <div class="showcase-card-col reveal-left">
+        <div class="showcase-card">
+          <div class="showcase-badge">Video · 2×</div>
+          <h3>Video Enhancer</h3>
+          <p>Topaz-grade AI upscale. Sharper faces, restored detail, clean master — ready for the Patcher and Studio with no extra compression.</p>
+          <div class="showcase-meta">
+            <span>2× upscale</span>
+            <span>Topaz-grade</span>
+            <span>Up to 500MB</span>
+          </div>
+          <a class="btn btn-ghost" href="video-enhancer.html" style="align-self:flex-start;margin-top:4px">Enhance video →</a>
+        </div>
+        <div class="drag-compare" data-drag id="drag-video">
+          <img class="drag-before" src="videos/compare-video-before.mp4" alt="Before" loading="lazy" decoding="async">
+          <img class="drag-after" src="videos/compare-video-after.mp4" alt="After" loading="lazy" decoding="async">
+          <div class="drag-label before">Before</div>
+          <div class="drag-label after">Enhanced</div>
+          <div class="drag-handle"><div class="drag-knob">◀ ▶</div></div>
+        </div>
+        <p class="drag-caption">Drag to compare video enhance</p>
+      </div>
+      <div class="showcase-card-col reveal-right">
+        <div class="showcase-card">
+          <div class="showcase-badge">Image · 4×</div>
+          <h3>4× Image Upscaler</h3>
+          <p>4× upscale for covers and stills. Queue-friendly jobs with cancel — original vs upscaled when the run finishes.</p>
+          <div class="showcase-meta">
+            <span>4× upscale</span>
+            <span>Aether Upscaler</span>
+            <span>JPG · PNG · WEBP</span>
+          </div>
+          <a class="btn btn-ghost" href="image-enhancer.html" style="align-self:flex-start;margin-top:4px">Upscale image →</a>
+        </div>
+        <div class="drag-compare" data-drag id="drag-image">
+          <img class="drag-before" src="images/compare-image-before.jpg" alt="Before" loading="lazy" decoding="async">
+          <img class="drag-after" src="images/compare-image-after.jpg" alt="After" loading="lazy" decoding="async">
+          <div class="drag-label before">Original</div>
+          <div class="drag-label after">4× Upscaled</div>
+          <div class="drag-handle"><div class="drag-knob">◀ ▶</div></div>
+        </div>
+        <p class="drag-caption">Drag to compare image upscale</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="studio">
+  <div class="wrap">
+    <span class="sec-tag">TikTok Studio</span>
+    <h2 class="sec-title">Direct upload.<br/>No middleman quality loss.</h2>
+    <p class="sec-sub">Most tools export a file and leave you to the app. AetherEnhance posts through TikTok’s official path after the patch.</p>
+    <div class="studio-block reveal">
+      <div class="studio-points reveal-fade">
+        <div class="sp">
+          <div class="sp-icon">1</div>
+          <div>
+            <h4>Official OAuth</h4>
+            <p>Authorize once. Password never touches our servers. Publish API with your privacy and brand toggles.</p>
+          </div>
+        </div>
+        <div class="sp">
+          <div class="sp-icon">2</div>
+          <div>
+            <h4>Patch before the wire</h4>
+            <p>Video Patcher prepares the container so the standard re-encode path is avoided — max signal flags set.</p>
+          </div>
+        </div>
+        <div class="sp">
+          <div class="sp-icon">3</div>
+          <div>
+            <h4>Chunked transfer</h4>
+            <p>Large files upload in chunks with retries. An unstable link costs a chunk, not the whole post.</p>
+          </div>
+        </div>
+        <div class="sp">
+          <div class="sp-icon">4</div>
+          <div>
+            <h4>Inbox or publish</h4>
+            <p>Send to your TikTok inbox or publish complete with caption and settings from the Studio.</p>
+          </div>
+        </div>
+      </div>
+      </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <span class="sec-tag">Questions</span>
+    <h2 class="sec-title">Common questions</h2>
+    <div class="faq-wrap reveal-fade">
+      <div class="faq-item">
+        <button class="faq-q" type="button" onclick="toggleFaq(this)">Is AetherEnhance really free?<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 4.5l4.5 4.5L11 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+        <div class="faq-a">Yes. No credit card, no email, no subscription. Join Telegram and Discord — that is the only requirement. Every live module unlocks with community access.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button" onclick="toggleFaq(this)">What makes TikTok Studio upload different?<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 4.5l4.5 4.5L11 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+        <div class="faq-a">We post through TikTok’s official upload path after the Video Patcher prepares the file. The platform receives a max-signal stream instead of a downscaled re-encode. Caption, privacy, and brand settings stay yours.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button" onclick="toggleFaq(this)">Does the Video Patcher improve quality?<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 4.5l4.5 4.5L11 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+        <div class="faq-a">It preserves the quality you already have by avoiding triggers that force TikTok’s heavy re-encode. Pair it with the Video Enhancer when the source itself needs more detail.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button" onclick="toggleFaq(this)">Are Auto Captions available now?<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 4.5l4.5 4.5L11 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+        <div class="faq-a">Yes — fully live. Movie Text or Lyrics templates, auto-detect, word edits, style, and export captioned MP4 in the browser.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button" onclick="toggleFaq(this)">Is my TikTok account safe?<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 4.5l4.5 4.5L11 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+        <div class="faq-a">Studio uses TikTok’s official OAuth. Your password never touches our servers. Client-side tools process media in your browser where possible.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button" onclick="toggleFaq(this)">Why Telegram and Discord?<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 4.5l4.5 4.5L11 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+        <div class="faq-a">That is how we ship updates, support users, and keep the product free. Joining takes seconds and is the only gate for the full toolkit.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section id="reviews">
+  <div class="wrap">
+    <span class="sec-tag">Community</span>
+    <h2 class="sec-title">What creators say</h2>
+    <p class="sec-sub">Real feedback from people posting with the quality method.</p>
+    <p class="swipe-hint"><i class="fas fa-hand-pointer"></i> Swipe left or right to see more</p>
+    <div class="reviews-carousel-wrap">
+      <div class="reviews-track" id="reviewsTrack">
+        <div class="review-slide is-active">
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">"Finally posts that don't look soft after TikTok. Patcher + Studio is the combo."</p>
+            <div class="review-user">
+              <div class="review-avatar">K</div>
+              <div class="review-meta">
+                <div class="review-name">Kofi</div>
+                <div class="review-role">Creator · 2 months</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="review-slide">
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">"Auto captions and the video upscale alone are worth it. Everything being free through the community is wild."</p>
+            <div class="review-user">
+              <div class="review-avatar">A</div>
+              <div class="review-meta">
+                <div class="review-name">Amara</div>
+                <div class="review-role">Editor · 5 months</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="review-slide">
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">"Direct Studio upload is the real unlock. No more guessing which export settings TikTok will crush."</p>
+            <div class="review-user">
+              <div class="review-avatar">J</div>
+              <div class="review-meta">
+                <div class="review-name">Jay</div>
+                <div class="review-role">Faceless channel · 3 months</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="review-slide">
+          <div class="review-card">
+            <div class="review-stars">★★★★☆</div>
+            <p class="review-text">"Privacy cleaner + patch before every post. Simple workflow and the feed looks noticeably sharper."</p>
+            <div class="review-user">
+              <div class="review-avatar">M</div>
+              <div class="review-meta">
+                <div class="review-name">Maya</div>
+                <div class="review-role">Creator · 1 month</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="review-slide">
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">"Joined through Telegram, unlocked everything same day. The before/after on my clips sold me."</p>
+            <div class="review-user">
+              <div class="review-avatar">T</div>
+              <div class="review-meta">
+                <div class="review-name">Tunde</div>
+                <div class="review-role">Creator · 4 months</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reviews-nav">
+        <button type="button" id="revPrev" aria-label="Previous review"><i class="fas fa-chevron-left"></i></button>
+        <button type="button" id="revNext" aria-label="Next review"><i class="fas fa-chevron-right"></i></button>
+      </div>
+      <div class="reviews-dots" id="reviewsDots"></div>
+    </div>
+  </div>
+</section>
+
+
+
+<section id="contact">
+  <div class="wrap">
+    <span class="sec-tag">Contact</span>
+    <h2 class="sec-title">Get in touch</h2>
+    <p class="sec-sub">Questions, feedback, or partnerships — send a note to the AetherEnhance team.</p>
+    <form class="contact-form reveal" id="contactForm" onsubmit="return openEmailDraft(event)">
+      <div class="contact-field">
+        <i class="fas fa-user"></i>
+        <input type="text" id="contactName" name="name" placeholder="Your name" required autocomplete="name"/>
+      </div>
+      <div class="contact-field">
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="contactEmail" name="email" placeholder="Your email" required autocomplete="email"/>
+      </div>
+      <div class="contact-field contact-field-area">
+        <i class="fas fa-comment"></i>
+        <textarea id="contactMessage" name="message" placeholder="How can we help?" required rows="3"></textarea>
+      </div>
+      <button type="submit" class="btn btn-white btn-lg" style="max-width:100%">Open email draft <i class="fas fa-paper-plane" style="margin-left:6px"></i></button>
+      <p class="contact-hint">Opens your email app with the message ready for <strong>aetherenhance@gmail.com</strong></p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="fb-name">Aether Enhance</div>
+        <div class="fb-desc">Free TikTok enhancement toolkit. Patch, enhance, caption, and upload in the highest quality the platform allows.</div>
+      </div>
+      <div class="fc-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="patcherstudio.html">TikTok Studio</a></li>
+          <li><a href="video-enhancer.html">Video Enhancer</a></li>
+          <li><a href="auto-captions.html">Auto Captions</a></li>
+        </ul>
+      </div>
+      <div class="fc-col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="https://t.me/aetherenhance_ch" target="_blank" rel="noopener">Telegram Channel</a></li>
+          <li><a href="https://discord.gg/9tcC92TcK" target="_blank" rel="noopener">Discord</a></li>
+          <li><a href="https://t.me/AetherEnhanceGroup" target="_blank" rel="noopener">Telegram Group</a></li>
+        </ul>
+      </div>
+      <div class="fc-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="fcopy">© 2026 AetherEnhance</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+
+(function(){
+  const grid = document.getElementById('featGrid');
+  const btn = document.getElementById('featMoreBtn');
+  if(!grid || !btn) return;
+  const label = btn.querySelector('span');
+  const icon = btn.querySelector('i');
+  const hidden = () => Array.from(grid.querySelectorAll('.fc.feat-hidden'));
+
+  function apply(open){
+    hidden().forEach(el => {
+      if(open){
+        el.style.display = 'block';
+      } else {
+        el.style.display = 'none';
+      }
+    });
+  }
+  // start collapsed
+  grid.classList.remove('is-expanded');
+  apply(false);
+
+  btn.addEventListener('click', () => {
+    const open = !grid.classList.contains('is-expanded');
+    grid.classList.toggle('is-expanded', open);
+    apply(open);
+    if(label) label.textContent = open ? 'See less' : 'See all features';
+    if(icon) icon.className = open ? 'fas fa-arrow-up' : 'fas fa-arrow-down';
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    requestAnimationFrame(() => {
+      if(open){
+        const first = grid.querySelector('.fc.feat-hidden');
+        const target = first || grid;
+        const top = target.getBoundingClientRect().top + window.pageYOffset - 80;
+        window.scrollTo({ top, behavior: 'smooth' });
+      } else {
+        const top = grid.getBoundingClientRect().top + window.pageYOffset - 80;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+})();
+
+
+/* Reviews carousel */
+(function(){
+  const track = document.getElementById('reviewsTrack');
+  if(!track) return;
+  const slides = Array.from(track.querySelectorAll('.review-slide'));
+  const dotsWrap = document.getElementById('reviewsDots');
+  const prev = document.getElementById('revPrev');
+  const next = document.getElementById('revNext');
+  if(dotsWrap){
+    slides.forEach((_, i) => {
+      const d = document.createElement('span');
+      if(i === 0) d.classList.add('is-on');
+      d.addEventListener('click', () => go(i));
+      dotsWrap.appendChild(d);
+    });
+  }
+  const dots = dotsWrap ? Array.from(dotsWrap.children) : [];
+  function nearest(){
+    const mid = track.scrollLeft + track.clientWidth / 2;
+    let best = 0, bestDist = Infinity;
+    slides.forEach((s, i) => {
+      const c = s.offsetLeft + s.offsetWidth / 2;
+      const dist = Math.abs(c - mid);
+      if(dist < bestDist){ bestDist = dist; best = i; }
+    });
+    return best;
+  }
+  function update(){
+    const i = nearest();
+    slides.forEach((s, idx) => s.classList.toggle('is-active', idx === i));
+    dots.forEach((d, idx) => d.classList.toggle('is-on', idx === i));
+  }
+  function go(i){
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    const s = slides[i];
+    const left = s.offsetLeft - (track.clientWidth - s.offsetWidth) / 2;
+    track.scrollTo({ left, behavior: 'smooth' });
+  }
+  let ticking = false;
+  track.addEventListener('scroll', () => {
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { update(); ticking = false; });
+  }, { passive: true });
+  if(prev) prev.addEventListener('click', () => go(nearest() - 1));
+  if(next) next.addEventListener('click', () => go(nearest() + 1));
+  // center first
+  requestAnimationFrame(() => go(0));
+  window.addEventListener('resize', () => go(nearest()), { passive: true });
+})();
+
+function toggleFaq(btn){
+  const item = btn.closest('.faq-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if(!wasOpen) item.classList.add('open');
+}
+
+const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-fade');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+revealElements.forEach(el => revealObserver.observe(el));
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const href = a.getAttribute('href');
+    if(!href || href === '#') return;
+    const target = document.querySelector(href);
+    if(target){ e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+
+/* Captions tutorial if present */
+(function(){
+  const player = document.getElementById('tutorial-player');
+  const v = document.getElementById('tutorial-video');
+  if(!player || !v) return;
+  const mark = () => player.classList.add('has-video');
+  v.addEventListener('loadeddata', mark);
+  if(v.readyState >= 2) mark();
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if(en.isIntersecting){ v.muted = true; v.play().catch(()=>{}); }
+      else v.pause();
+    });
+  }, { threshold: 0.2 });
+  io.observe(player);
+})();
+
+
+/* Silent video cache + mobile-safe playback */
+(function(){
+  const DB_NAME = 'aether-vid-cache-v2';
+  const STORE = 'blobs';
+  const mem = Object.create(null);
+
+  function openDB(){
+    return new Promise((resolve, reject) => {
+      try{
+        const req = indexedDB.open(DB_NAME, 1);
+        req.onupgradeneeded = () => { req.result.createObjectStore(STORE); };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      }catch(e){ reject(e); }
+    });
+  }
+
+  async function idbGet(url){
+    try{
+      const db = await openDB();
+      return await new Promise(res => {
+        const tx = db.transaction(STORE, 'readonly');
+        const r = tx.objectStore(STORE).get(url);
+        r.onsuccess = () => res(r.result || null);
+        r.onerror = () => res(null);
+      });
+    }catch(e){ return null; }
+  }
+
+  async function idbSet(url, blob){
+    try{
+      const db = await openDB();
+      await new Promise(res => {
+        const tx = db.transaction(STORE, 'readwrite');
+        tx.objectStore(STORE).put(blob, url);
+        tx.oncomplete = () => res();
+        tx.onerror = () => res();
+      });
+    }catch(e){}
+  }
+
+  async function resolveSrc(url){
+    if(mem[url]) return mem[url];
+    const cached = await idbGet(url);
+    if(cached){
+      const obj = URL.createObjectURL(cached);
+      mem[url] = obj;
+      return obj;
+    }
+    return url; // network first paint — cache in background
+  }
+
+  function cacheInBackground(url){
+    if(!url || mem[url]) return;
+    // don't block UI
+    setTimeout(async () => {
+      try{
+        const existing = await idbGet(url);
+        if(existing){
+          mem[url] = URL.createObjectURL(existing);
+          return;
+        }
+        const res = await fetch(url, { credentials:'omit', mode:'cors', cache:'force-cache' });
+        if(!res.ok) return;
+        const blob = await res.blob();
+        await idbSet(url, blob);
+        mem[url] = URL.createObjectURL(blob);
+      }catch(e){}
+    }, 300);
+  }
+
+  function setLoader(frame, on){
+    const loader = frame && frame.querySelector('.vid-loader');
+    if(!loader) return;
+    // Only show spinner briefly if no frames yet — hide once any data
+    if(on) loader.classList.remove('hidden');
+    else loader.classList.add('hidden');
+  }
+
+  function wireControls(frame, video){
+    const playBtn = frame.querySelector('.play-btn');
+    const muteBtn = frame.querySelector('.mute-btn');
+    const syncPlay = () => {
+      if(playBtn) playBtn.innerHTML = video.paused ? '<i class="fas fa-play"></i>' : '<i class="fas fa-pause"></i>';
+    };
+    const syncMute = () => {
+      if(muteBtn) muteBtn.innerHTML = video.muted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+    };
+    if(playBtn){
+      playBtn.addEventListener('click', (e) => {
+        e.preventDefault(); e.stopPropagation();
+        if(video.paused){ video.muted = true; video.play().catch(()=>{}); }
+        else video.pause();
+      });
+    }
+    if(muteBtn){
+      muteBtn.addEventListener('click', (e) => {
+        e.preventDefault(); e.stopPropagation();
+        video.muted = !video.muted;
+        syncMute();
+      });
+    }
+    video.addEventListener('click', (e) => {
+      e.preventDefault(); e.stopPropagation();
+      if(video.paused){ video.muted = true; video.play().catch(()=>{}); }
+      else video.pause();
+    });
+    video.addEventListener('play', () => { syncPlay(); setLoader(frame, false); frame.classList.add('has-media'); });
+    video.addEventListener('playing', () => setLoader(frame, false));
+    video.addEventListener('pause', syncPlay);
+    video.addEventListener('volumechange', syncMute);
+    video.addEventListener('loadeddata', () => { frame.classList.add('has-media'); setLoader(frame, false); });
+    video.addEventListener('canplay', () => setLoader(frame, false));
+    video.addEventListener('error', () => setLoader(frame, false));
+    // Don't show waiting spinner after first play — silent rebuffer
+    video.addEventListener('waiting', () => {
+      if(!frame.classList.contains('has-media')) setLoader(frame, true);
+    });
+    syncPlay(); syncMute();
+  }
+
+  async function bindCompareFrame(frame){
+    if(!frame) return;
+    const video = frame.querySelector('video');
+    if(!video) return;
+
+    const url = video.getAttribute('data-src') || video.getAttribute('src');
+    if(!url) return;
+
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.preload = 'auto';
+
+    wireControls(frame, video);
+    setLoader(frame, true);
+
+    // Prefer cached blob when available (instant, no network)
+    const src = await resolveSrc(url);
+    if(video.src !== src){
+      video.src = src;
+      try { video.load(); } catch(e){}
+    }
+    // Warm cache silently for next visit
+    if(src === url) cacheInBackground(url);
+
+    const tryPlay = () => {
+      video.muted = true;
+      const p = video.play();
+      if(p && p.catch) p.catch(() => {
+        if(video.readyState >= 2) setLoader(frame, false);
+      });
+    };
+
+    video.addEventListener('canplay', tryPlay, { once:true });
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if(en.isIntersecting) tryPlay();
+        else video.pause();
+      });
+    }, { threshold: 0.12, rootMargin: '100px 0px' });
+    io.observe(frame);
+
+    requestAnimationFrame(() => {
+      const r = frame.getBoundingClientRect();
+      if(r.top < innerHeight + 120 && r.bottom > -40) tryPlay();
+    });
+  }
+
+  bindCompareFrame(document.getElementById('compare-low'));
+  bindCompareFrame(document.getElementById('compare-high'));
+})();
+
+
+/* Drag-to-compare — handle only so page can scroll */
+(function(){
+  function bindDrag(el){
+    if(!el) return;
+    const after = el.querySelector('.drag-after');
+    const handle = el.querySelector('.drag-handle');
+    if(!after || !handle) return;
+    let ratio = 0.5;
+    const set = (r) => {
+      ratio = Math.max(0.02, Math.min(0.98, r));
+      const pct = (ratio * 100).toFixed(2) + '%';
+      after.style.clipPath = 'inset(0 0 0 ' + pct + ')';
+      handle.style.left = pct;
+    };
+    set(0.5);
+    const move = (clientX) => {
+      const rect = el.getBoundingClientRect();
+      set((clientX - rect.left) / rect.width);
+    };
+    let active = false;
+    handle.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      active = true;
+      handle.setPointerCapture(e.pointerId);
+      move(e.clientX);
+    });
+    handle.addEventListener('pointermove', (e) => {
+      if(!active) return;
+      e.preventDefault();
+      move(e.clientX);
+    });
+    const end = () => { active = false; };
+    handle.addEventListener('pointerup', end);
+    handle.addEventListener('pointercancel', end);
+  }
+  document.querySelectorAll('[data-drag]').forEach(bindDrag);
+})();
+
+/* Page skeleton dismiss */
+(function(){
+  const skel = document.getElementById('pageSkel');
+  function hideSkel(){
+    document.body.classList.remove('is-loading');
+    if(!skel) return;
+    skel.classList.add('fade-out');
+    setTimeout(() => skel.remove(), 450);
+  }
+  const ready = () => {
+    // wait fonts + a tick, hard ceiling 2.5s
+    const fonts = document.fonts ? document.fonts.ready : Promise.resolve();
+    Promise.race([
+      fonts,
+      new Promise(r => setTimeout(r, 400))
+    ]).then(() => setTimeout(hideSkel, 120));
+  };
+  if(document.readyState === 'complete') ready();
+  else window.addEventListener('load', ready, { once:true });
+  setTimeout(hideSkel, 1200); // never stuck
+})();
+</script>
+</body>
+</html>
