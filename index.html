@@ -507,19 +507,27 @@ section.has-card > .wrap{
 .compare-frame .vid-btn.play-btn{left:14px}
 .compare-frame .vid-btn.mute-btn{right:14px}
 .compare-frame .vid-loader{
-  position:absolute;inset:0;z-index:2;
-  display:flex;align-items:center;justify-content:center;
+  position:absolute; inset:0; z-index:5;
+  display:flex; align-items:center; justify-content:center;
   background:rgba(8,8,10,.55);
-  transition:opacity .35s ease,visibility .35s;
+  transition:opacity .3s ease, visibility .3s;
+  pointer-events:none;
 }
-.compare-frame .vid-loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
-.compare-frame .vid-spinner{
-  width:36px;height:36px;border-radius:50%;
-  border:2.5px solid rgba(255,255,255,.15);
+.vid-loader.hidden{
+  opacity:0; visibility:hidden;
+}
+.vid-loader .spin,
+.vid-loader .vid-spinner{
+  width:36px; height:36px; border-radius:50%;
+  border:2.5px solid rgba(255,255,255,.18);
   border-top-color:#fff;
   animation:vidSpin .7s linear infinite;
 }
-@keyframes vidSpin{to{transform:rotate(360deg)}}
+@keyframes vidSpin{ to{ transform:rotate(360deg); } }
+.tutorial-player{ position:relative; }
+.tutorial-player .vid-loader{
+  border-radius: inherit;
+}}
 .compare-placeholder{display:none !important;
   text-align:center;padding:24px;color:var(--dim);font-size:12px;
   position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -1098,7 +1106,7 @@ body.is-loading > *:not(.page-skel){ visibility:hidden; }
             <span class="fps-pill">30 FPS</span>
           </div>
           <div class="compare-frame" id="compare-low">
-            <video src="videos/compare-standard.mp4" poster="images/compare-standard.jpg" muted loop playsinline webkit-playsinline preload="auto"></video>
+            <video data-src="videos/compare-standard.mp4" poster="images/compare-standard.jpg" muted loop playsinline webkit-playsinline preload="auto"></video>
             <div class="vid-loader"><div class="spin"></div></div>
             <div class="vid-controls">
               <button type="button" class="vid-btn play-btn" aria-label="Play/Pause"><i class="fas fa-play"></i></button>
@@ -1120,7 +1128,7 @@ body.is-loading > *:not(.page-skel){ visibility:hidden; }
             <span class="fps-pill">60 FPS</span>
           </div>
           <div class="compare-frame" id="compare-high">
-            <video src="videos/compare-enhanced.mp4" poster="images/compare-enhanced.jpg" muted loop playsinline webkit-playsinline preload="auto"></video>
+            <video data-src="videos/compare-enhanced.mp4" poster="images/compare-enhanced.jpg" muted loop playsinline webkit-playsinline preload="auto"></video>
             <div class="vid-loader"><div class="spin"></div></div>
             <div class="vid-controls">
               <button type="button" class="vid-btn play-btn" aria-label="Play/Pause"><i class="fas fa-play"></i></button>
@@ -1205,7 +1213,8 @@ body.is-loading > *:not(.page-skel){ visibility:hidden; }
     <p class="sec-sub">Drop a clip, run detection, pick Movie Text or Lyrics — export with word-level timing.</p>
     <div class="tutorial-layout reveal">
       <div class="tutorial-player" id="tutorial-player">
-        <video id="tutorial-video" src="videos/captions-demo.mp4" poster="images/captions-demo.jpg" muted loop playsinline preload="metadata"></video>
+        <video id="tutorial-video" data-src="videos/captions-demo.mp4" src="videos/captions-demo.mp4" poster="images/captions-demo.jpg" muted loop playsinline preload="auto"></video>
+        <div class="vid-loader" id="tutorial-loader"><div class="spin"></div></div>
         <div class="tutorial-footer-label">Auto Captions · Movie Text · Editor preview</div>
       </div>
       <div class="tutorial-copy">
@@ -1653,9 +1662,9 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 })();
 
 
-/* Silent video cache + mobile-safe playback */
+/* Silent video cache + synced compare playback + loaders */
 (function(){
-  const DB_NAME = 'aether-vid-cache-v2';
+  const DB_NAME = 'aether-vid-cache-v3';
   const STORE = 'blobs';
   const mem = Object.create(null);
 
@@ -1695,6 +1704,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   }
 
   async function resolveSrc(url){
+    if(!url) return url;
     if(mem[url]) return mem[url];
     const cached = await idbGet(url);
     if(cached){
@@ -1702,34 +1712,52 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       mem[url] = obj;
       return obj;
     }
-    return url; // network first paint — cache in background
+    return url;
   }
 
-  function cacheInBackground(url){
-    if(!url || mem[url]) return;
-    // don't block UI
-    setTimeout(async () => {
-      try{
-        const existing = await idbGet(url);
-        if(existing){
-          mem[url] = URL.createObjectURL(existing);
-          return;
-        }
-        const res = await fetch(url, { credentials:'omit', mode:'cors', cache:'force-cache' });
-        if(!res.ok) return;
-        const blob = await res.blob();
-        await idbSet(url, blob);
-        mem[url] = URL.createObjectURL(blob);
-      }catch(e){}
-    }, 300);
+  async function fetchAndCache(url){
+    if(!url || mem[url]) return mem[url] || url;
+    try{
+      const existing = await idbGet(url);
+      if(existing){
+        mem[url] = URL.createObjectURL(existing);
+        return mem[url];
+      }
+      const res = await fetch(url, { credentials:'omit', mode:'cors', cache:'force-cache' });
+      if(!res.ok) return url;
+      const blob = await res.blob();
+      await idbSet(url, blob);
+      mem[url] = URL.createObjectURL(blob);
+      return mem[url];
+    }catch(e){ return url; }
   }
 
   function setLoader(frame, on){
     const loader = frame && frame.querySelector('.vid-loader');
     if(!loader) return;
-    // Only show spinner briefly if no frames yet — hide once any data
     if(on) loader.classList.remove('hidden');
     else loader.classList.add('hidden');
+  }
+
+  /* ---- SYNCED COMPARE PAIR ---- */
+  let pair = { low: null, high: null, syncing: false };
+
+  function syncPairFrom(source){
+    if(pair.syncing || !pair.low || !pair.high) return;
+    const other = source === pair.low ? pair.high : pair.low;
+    if(!other) return;
+    pair.syncing = true;
+    try{
+      if(Math.abs(other.currentTime - source.currentTime) > 0.18){
+        other.currentTime = source.currentTime;
+      }
+      if(source.paused && !other.paused) other.pause();
+      if(!source.paused && other.paused){
+        other.muted = true;
+        other.play().catch(()=>{});
+      }
+    }catch(e){}
+    pair.syncing = false;
   }
 
   function wireControls(frame, video){
@@ -1744,8 +1772,21 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     if(playBtn){
       playBtn.addEventListener('click', (e) => {
         e.preventDefault(); e.stopPropagation();
-        if(video.paused){ video.muted = true; video.play().catch(()=>{}); }
-        else video.pause();
+        if(video.paused){
+          video.muted = true;
+          video.play().catch(()=>{});
+          // keep pair in lockstep
+          if(video === pair.low || video === pair.high){
+            const other = video === pair.low ? pair.high : pair.low;
+            if(other){ other.muted = true; other.currentTime = video.currentTime; other.play().catch(()=>{}); }
+          }
+        } else {
+          video.pause();
+          if(video === pair.low || video === pair.high){
+            const other = video === pair.low ? pair.high : pair.low;
+            if(other) other.pause();
+          }
+        }
       });
     }
     if(muteBtn){
@@ -1757,8 +1798,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     }
     video.addEventListener('click', (e) => {
       e.preventDefault(); e.stopPropagation();
-      if(video.paused){ video.muted = true; video.play().catch(()=>{}); }
-      else video.pause();
+      if(playBtn) playBtn.click();
     });
     video.addEventListener('play', () => { syncPlay(); setLoader(frame, false); frame.classList.add('has-media'); });
     video.addEventListener('playing', () => setLoader(frame, false));
@@ -1766,14 +1806,20 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     video.addEventListener('volumechange', syncMute);
     video.addEventListener('loadeddata', () => { frame.classList.add('has-media'); setLoader(frame, false); });
     video.addEventListener('canplay', () => setLoader(frame, false));
+    video.addEventListener('canplaythrough', () => setLoader(frame, false));
     video.addEventListener('error', () => setLoader(frame, false));
-    // Don't show waiting spinner after first play — silent rebuffer
-    video.addEventListener('waiting', () => { setLoader(frame, true); });
-    video.addEventListener('stalled', () => { setLoader(frame, true); });
+    video.addEventListener('waiting', () => setLoader(frame, true));
+    video.addEventListener('stalled', () => setLoader(frame, true));
+    video.addEventListener('seeking', () => setLoader(frame, true));
+    video.addEventListener('seeked', () => setLoader(frame, false));
+    // keep pair time aligned
+    video.addEventListener('timeupdate', () => {
+      if(video === pair.low || video === pair.high) syncPairFrom(video);
+    });
     syncPlay(); syncMute();
   }
 
-  async function bindCompareFrame(frame){
+  async function bindCompareFrame(frame, slot){
     if(!frame) return;
     const video = frame.querySelector('video');
     if(!video) return;
@@ -1786,19 +1832,25 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     video.muted = true;
     video.defaultMuted = true;
     video.playsInline = true;
+    video.loop = true;
     video.preload = 'auto';
+
+    if(slot === 'low') pair.low = video;
+    if(slot === 'high') pair.high = video;
 
     wireControls(frame, video);
     setLoader(frame, true);
 
-    // Prefer cached blob when available (instant, no network)
-    const src = await resolveSrc(url);
+    // Instant if cached, else network then cache for next visit
+    let src = await resolveSrc(url);
+    if(src === url){
+      // first visit — fetch, swap to blob, cache
+      src = await fetchAndCache(url);
+    }
     if(video.src !== src){
       video.src = src;
       try { video.load(); } catch(e){}
     }
-    // Warm cache silently for next visit
-    if(src === url) cacheInBackground(url);
 
     const tryPlay = () => {
       video.muted = true;
@@ -1806,6 +1858,17 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       if(p && p.catch) p.catch(() => {
         if(video.readyState >= 2) setLoader(frame, false);
       });
+      // when one starts, nudge the other
+      if(video === pair.low || video === pair.high){
+        const other = video === pair.low ? pair.high : pair.low;
+        if(other && other.paused && other.readyState >= 2){
+          try{
+            other.currentTime = video.currentTime;
+            other.muted = true;
+            other.play().catch(()=>{});
+          }catch(e){}
+        }
+      }
     };
 
     video.addEventListener('canplay', tryPlay, { once:true });
@@ -1815,19 +1878,58 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
         if(en.isIntersecting) tryPlay();
         else video.pause();
       });
-    }, { threshold: 0.12, rootMargin: '100px 0px' });
+    }, { threshold: 0.12, rootMargin: '120px 0px' });
     io.observe(frame);
 
     requestAnimationFrame(() => {
       const r = frame.getBoundingClientRect();
-      if(r.top < innerHeight + 120 && r.bottom > -40) tryPlay();
+      if(r.top < innerHeight + 140 && r.bottom > -40) tryPlay();
     });
   }
 
-  bindCompareFrame(document.getElementById('compare-low'));
-  bindCompareFrame(document.getElementById('compare-high'));
-})();
+  /* Tutorial caption video with loader + cache */
+  async function bindTutorial(){
+    const player = document.getElementById('tutorial-player');
+    const video = document.getElementById('tutorial-video');
+    if(!player || !video) return;
+    const url = video.getAttribute('data-src') || video.getAttribute('src');
+    setLoader(player, true);
+    video.muted = true;
+    video.playsInline = true;
+    video.loop = true;
+    video.preload = 'auto';
 
+    let src = await resolveSrc(url);
+    if(src === url) src = await fetchAndCache(url);
+    if(video.src !== src){
+      video.src = src;
+      try { video.load(); } catch(e){}
+    }
+
+    const hide = () => setLoader(player, false);
+    const show = () => setLoader(player, true);
+    video.addEventListener('playing', hide);
+    video.addEventListener('canplay', hide);
+    video.addEventListener('loadeddata', hide);
+    video.addEventListener('waiting', show);
+    video.addEventListener('stalled', show);
+
+    const tryPlay = () => { video.muted = true; video.play().catch(()=>{}); };
+    video.addEventListener('canplay', tryPlay, { once:true });
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if(en.isIntersecting) tryPlay();
+        else video.pause();
+      });
+    }, { threshold: 0.2 });
+    io.observe(player);
+  }
+
+  bindCompareFrame(document.getElementById('compare-low'), 'low');
+  bindCompareFrame(document.getElementById('compare-high'), 'high');
+  bindTutorial();
+})();
 
 /* Drag-to-compare — handle only; supports img + video; auto-size */
 (function(){
@@ -1857,14 +1959,31 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     const after = el.querySelector('.drag-after');
     if(!wrap || !handle) return;
 
-    // play videos muted
+    // play videos muted + keep in sync
+    const vids = [before, after].filter(m => m && m.tagName === 'VIDEO');
+    vids.forEach(m => {
+      m.muted = true; m.defaultMuted = true; m.playsInline = true; m.loop = true;
+      m.addEventListener('loadedmetadata', () => fitBox(el));
+      m.addEventListener('loadeddata', () => { fitBox(el); m.play && m.play().catch(()=>{}); });
+      m.play && m.play().catch(()=>{});
+    });
+    if(vids.length === 2){
+      let syncing = false;
+      const keep = (src) => {
+        if(syncing) return;
+        const other = src === vids[0] ? vids[1] : vids[0];
+        syncing = true;
+        try{
+          if(Math.abs(other.currentTime - src.currentTime) > 0.2) other.currentTime = src.currentTime;
+          if(src.paused && !other.paused) other.pause();
+          if(!src.paused && other.paused){ other.muted = true; other.play().catch(()=>{}); }
+        }catch(e){}
+        syncing = false;
+      };
+      vids[0].addEventListener('timeupdate', () => keep(vids[0]));
+      vids[1].addEventListener('timeupdate', () => keep(vids[1]));
+    }
     [before, after].forEach(m => {
-      if(m && m.tagName === 'VIDEO'){
-        m.muted = true; m.defaultMuted = true; m.playsInline = true;
-        m.play && m.play().catch(()=>{});
-        m.addEventListener('loadedmetadata', () => fitBox(el));
-        m.addEventListener('loadeddata', () => { fitBox(el); m.play && m.play().catch(()=>{}); });
-      }
       if(m && m.tagName === 'IMG'){
         if(m.complete) fitBox(el);
         else m.addEventListener('load', () => fitBox(el));
